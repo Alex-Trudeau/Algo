@@ -7,7 +7,7 @@
 #include "station.h"
 
 namespace TP {
-
+/*
 
 Station::Station(const std::vector<std::string>& ligne_gtfs)
 
@@ -58,7 +58,7 @@ double distance(const Station& p_station) const{
 
 }
 
-
+*/
 
 
 
