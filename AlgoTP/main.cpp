@@ -13,15 +13,23 @@ using namespace std;
 
 int main(){
 
+	vector<string> test;
 	string line_;
-	ifstream file_("bob.txt");
+	ifstream file_("TXT/routes.txt");
 
 	if(file_.is_open()){
 		while(getline(file_,line_))
 		{
-			cout<<line_<< '\n';
+			test.push_back(line_);
 		}
 		file_.close();
+
+		unsigned int taille = test.size();
+		for (unsigned int i = 0; i < taille; i++){
+			cout << test[i] << endl;
+
+		}
+
 	}
 	else {
 		cout<<"File isn't open"<< '\n';
