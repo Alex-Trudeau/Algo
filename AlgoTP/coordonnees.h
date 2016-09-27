@@ -9,6 +9,9 @@
 #include <iostream>
 #include <sstream>
 
+#define M_PI    3.1415926535897932384626433832795
+#define M_EARTH_RADIUS = 6371.0
+
 /*!
  * \class Coordonnees
  * \brief Cette classe permet de représenter les coordonnées GPS d'un endroit
@@ -32,6 +35,8 @@ public:
     double operator- (const Coordonnees & other) const;
 
     friend std::ostream & operator<<(std::ostream & flux, const Coordonnees & p_coord);
+
+    double degre_to_radian(double p_deg);
 
 private:
     double m_latitude;
