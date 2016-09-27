@@ -9,6 +9,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include "auxiliaires.h"
 using namespace std;
 
 int main(){
@@ -34,6 +35,8 @@ int main(){
 	else {
 		cout<<"File isn't open"<< '\n';
 	}
+
+	split(test[1], ',');
 
 
 	return 0;
