@@ -10,6 +10,8 @@
 #include <fstream>
 #include <string>
 #include "auxiliaires.h"
+#include "ligne.h"
+
 using namespace std;
 
 int main(){

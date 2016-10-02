@@ -10,7 +10,8 @@ Ligne::Ligne(const std::vector<std::string>& p_ligne):
 	m_id(std::stoi(p_ligne[0])),
 	m_numero(p_ligne[2]),
 	m_description(p_ligne[4]),
-	m_categorie(Ligne::couleurToCategorie(p_ligne[7])){
+	m_categorie(Ligne::couleurToCategorie(p_ligne[7])),
+	m_voyages(std::vector<Voyage*> p_vide){
 
 }
 
