@@ -31,7 +31,7 @@ void Coordonnees::setLongitude(double p_longitude) {
 }
 
 static bool Coordonnees::is_valide_coord(double p_latitude, double p_longitude) {
-	if (p_latitude >= 0 && p_latitude <= 90 && p_longitude >= -180 && p_longitude <= 180)
+	if (p_latitude >= -90 && p_latitude <= 90 && p_longitude >= -180 && p_longitude <= 180)
 		return true;
 	else
 		return false;

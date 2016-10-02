@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "auxiliaires.h"
 #include "coordonnees.h"
 #include "ligne.h"
 #include "voyage.h"
@@ -15,6 +16,9 @@
 class Voyage;
 class Ligne;
 
+using namespace std;
+
+namespace tp {
 /*!
  * \class Station
  * \brief Classe représentant une station. Une station est un emplacement physique où un bus effectue des arrêts.
@@ -46,5 +50,6 @@ public:
 	double distance(const Station& p_station) const;
 };
 
+} // Namespace tp
 
 #endif //RTC_STATION_H

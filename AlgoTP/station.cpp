@@ -6,61 +6,69 @@
  */
 #include "station.h"
 
-namespace TP {
-/*
+using namespace std;
 
-Station::Station(const std::vector<std::string>& ligne_gtfs)
+namespace tp {
 
-friend std::ostream& operator<<(std::ostream& flux, const Station& p_station){
-
+Station::Station(const std::vector<std::string>& p_ligne):
+	m_id(std::stoi(p_ligne[0])),m_nom(p_ligne[1]),
+	m_description(p_ligne[3]),m_coords(std::stod(p_ligne[4]),std::stod(p_ligne[5])),
+	m_voyages_passants(std::vector<Voyage* >){
+	// INIT VECTEUR VOYAGE
 }
 
-const Coordonnees& getCoords() const{
+friend std::ostream& Station::operator<<(std::ostream& flux, const Station& p_station){
+	// AFFICHER QUOI??
+}
+
+const Coordonnees& Station::getCoords() const{
 	return m_coords;
-
 }
-void setCoords(const Coordonnees& coords){
-	m_coords = coords;
 
+void Station::setCoords(const Coordonnees& p_coords){
+	m_coords = p_coords;
 }
-const std::string& getDescription() const{
+
+const std::string& Station::getDescription() const{
 	return m_description;
 }
-void setDescription(const std::string& description){
 
+void Station::setDescription(const std::string& p_description){
+	m_description = p_description;
 }
-std::vector<Ligne*> getLignesPassantes() const{
 
+std::vector<Ligne*> Station::getLignesPassantes() const{
+	// PAS SUR POUR TOUT SUITE
 }
-const std::string& getNom() const{
+
+const std::string& Station::getNom() const{
 	return m_nom;
 }
 
-void setNom(const std::string& nom){
-	m_nom = nom;
+void Station::setNom(const std::string& p_nom){
+	m_nom = p_nom;
 }
-unsigned int getId() const{
+
+unsigned int Station::getId() const{
 	return m_id;
 }
-void setId(unsigned int stationId){
-	m_id = stationID;
-}
-const std::vector<Voyage*> & getVoyagesPassants() const{
-	return m_voyages_passants;
+
+void Station::setId(unsigned int p_id){
+	m_id = p_id;
 }
 
-
-void addVoyage(Voyage* ptr_voyage){
-
+const std::vector<Voyage*> & Station::getVoyagesPassants() const{
+	// PAS SUR POUR TOUT SUITE
 }
 
-double distance(const Station& p_station) const{
-
+void Station::addVoyage(Voyage* ptr_voyage){
+	// PAS SUR POUR TOUT SUITE
 }
 
-*/
+double Station::distance(const Station& p_station) const{
+	return this->getCoords()-p_station.getCoords();
+}
 
 
-
-} // fin namespace
+} // fin namespace tp
 
