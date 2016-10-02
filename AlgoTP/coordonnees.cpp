@@ -56,7 +56,7 @@ double Coordonnees::operator-(const Coordonnees & p_other) const {
 
 friend std::ostream & Coordonnees::operator<<(std::ostream & p_flux,
 		const Coordonnees & p_coord) {
-	p_flux << p_coord.m_latitude << ", " << p_coord.m_longitude;
+	p_flux << p_coord.m_latitude << ", " << p_coord.m_longitude << endl;
 	return p_flux;
 }
 

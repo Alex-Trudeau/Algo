@@ -34,7 +34,7 @@ static Ligne::CategorieBus Ligne::couleurToCategorie(std::string p_couleur){
 
 static std::string Ligne::categorieToString(CategorieBus p_cat){
 	switch (p_cat){
-	case CategorieBus::METRO_BUS:
+	case CategorieBus::METRO_lS:
 		return "METRO_BUS";
 		break;
 	case CategorieBus::LEBUS:
@@ -58,7 +58,14 @@ void Ligne::setCategorie(CategorieBus p_categorie){
 }
 
 std::pair<std::string, std::string> Ligne::getDestinations() const{
-	// A FAIRE
+	std::string fst = m_voyages[0].getDestination();
+	std::string snd = m_voyages[1].getDestination();
+	int i = 2;
+	while(i < m_voyages.size() && snd == fst){
+		snd = m_voyages[i].getDestination();
+		i++;
+	}
+	return std::pair<std::string, std::string> p(fst,snd);
 }
 
 unsigned int Ligne::getId() const{
@@ -69,21 +76,39 @@ void Ligne::setId(unsigned int p_id){
 	m_id = p_id;
 }
 
-const std::string& Ligne::getNumero() const;
+const std::string& Ligne::getNumero() const{
+	return m_numero;
+}
 
-void Ligne::setNumero(const std::string& numero);
+void Ligne::setNumero(const std::string& p_numero){
+	m_numero = p_numero;
+}
 
-const std::vector<Voyage*>& Ligne::getVoyages() const;
+const std::vector<Voyage*>& Ligne::getVoyages() const{
+	return m_voyages;
+}
 
-void Ligne::setVoyages(const std::vector<Voyage*>& voyages);
+void Ligne::setVoyages(const std::vector<Voyage*>& p_voyages){
+	m_voyages = p_voyages;
+}
 
-void Ligne::addVoyage(Voyage* ptr_voyage);
+void Ligne::addVoyage(Voyage* ptr_voyage){
+	m_voyages.push_back(ptr_voyage);
+}
 
-const std::string& Ligne::getDescription() const;
+const std::string& Ligne::getDescription() const{
+	return m_description;
+}
 
-void Ligne::setDescription(const std::string& description);
+void Ligne::setDescription(const std::string& p_description){
+	m_description = p_description;
+}
 
-friend std::ostream& Ligne::operator <<(std::ostream& f, const Ligne& p_ligne);
+friend std::ostream& Ligne::operator <<(std::ostream& f, const Ligne& p_ligne){
+	f << categorieToString(m_categorie) << " " << m_id << " : " << (this ->getDestinations())[0] << " - " <<
+			(this ->getDestinations())[1] << endl;
+	return f;
+}
 
 
 
