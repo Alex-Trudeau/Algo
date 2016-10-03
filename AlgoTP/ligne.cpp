@@ -6,109 +6,94 @@
  */
 #include "ligne.h"
 
-Ligne::Ligne(const std::vector<std::string>& p_ligne):
-	m_id(std::stoi(p_ligne[0])),
-	m_numero(p_ligne[2]),
-	m_description(p_ligne[4]),
-	m_categorie(Ligne::couleurToCategorie(p_ligne[7])),
-	m_voyages(std::vector<Voyage*> p_vide){
+Ligne::Ligne(const std::vector<std::string>& p_ligne) :
+		m_id(std::stoi(p_ligne[0])), m_numero(p_ligne[2]), m_description(
+				p_ligne[4]), m_categorie(Ligne::couleurToCategorie(p_ligne[7])), m_voyages(
+				std::vector<Voyage*>()) {
 
 }
 
-static Ligne::CategorieBus Ligne::couleurToCategorie(std::string p_couleur){
-	switch (p_couleur){
-	case "97BF0D":
+CategorieBus Ligne::couleurToCategorie(std::string p_couleur) {
+	if (p_couleur == "97BF0D")
 		return CategorieBus::METRO_BUS;
-		break;
-	case "013888":
+	if (p_couleur == "013888")
 		return CategorieBus::LEBUS;
-		break;
-	case "E04503":
+	if (p_couleur == "E04503")
 		return CategorieBus::EXPRESS;
-		break;
-	case "1A171B":
+	if (p_couleur == "1A171B")
 		return CategorieBus::COUCHE_TARD;
-		break;
-	}
 }
 
-static std::string Ligne::categorieToString(CategorieBus p_cat){
-	switch (p_cat){
-	case CategorieBus::METRO_lS:
+std::string Ligne::categorieToString(CategorieBus p_cat) {
+	if (p_cat == CategorieBus::METRO_BUS)
 		return "METRO_BUS";
-		break;
-	case CategorieBus::LEBUS:
+	if (p_cat == CategorieBus::LEBUS)
 		return "LEBUS";
-		break;
-	case CategorieBus::EXPRESS:
+	if (p_cat == CategorieBus::EXPRESS)
 		return "EXPRESS";
-		break;
-	case CategorieBus::COUCHE_TARD:
+	if (p_cat == CategorieBus::COUCHE_TARD)
 		return "COUCHE_TARD";
-		break;
-	}
 }
 
-CategorieBus Ligne::getCategorie() const{
+CategorieBus Ligne::getCategorie() const {
 	return m_categorie;
 }
 
-void Ligne::setCategorie(CategorieBus p_categorie){
+void Ligne::setCategorie(CategorieBus p_categorie) {
 	m_categorie = p_categorie;
 }
 
-std::pair<std::string, std::string> Ligne::getDestinations() const{
-	std::string fst = m_voyages[0].getDestination();
-	std::string snd = m_voyages[1].getDestination();
-	int i = 2;
-	while(i < m_voyages.size() && snd == fst){
-		snd = m_voyages[i].getDestination();
-		i++;
+std::pair<std::string, std::string> Ligne::getDestinations() const {
+	std::vector<string> destinations;
+	for (int i = 0; i < m_voyages.size(); i++) {
+		destinations.push_back(m_voyages[i]->getDestination());
 	}
-	return std::pair<std::string, std::string> p(fst,snd);
+	if (destinations.size() == 1)
+		return {destinations[0], ""};
+	else
+		return {destinations[0], destinations[1]};
 }
 
-unsigned int Ligne::getId() const{
+unsigned int Ligne::getId() const {
 	return m_id;
 }
 
-void Ligne::setId(unsigned int p_id){
+void Ligne::setId(unsigned int p_id) {
 	m_id = p_id;
 }
 
-const std::string& Ligne::getNumero() const{
+const std::string& Ligne::getNumero() const {
 	return m_numero;
 }
 
-void Ligne::setNumero(const std::string& p_numero){
+void Ligne::setNumero(const std::string& p_numero) {
 	m_numero = p_numero;
 }
 
-const std::vector<Voyage*>& Ligne::getVoyages() const{
+const std::vector<Voyage*>& Ligne::getVoyages() const {
 	return m_voyages;
 }
 
-void Ligne::setVoyages(const std::vector<Voyage*>& p_voyages){
+void Ligne::setVoyages(const std::vector<Voyage*>& p_voyages) {
 	m_voyages = p_voyages;
 }
 
-void Ligne::addVoyage(Voyage* ptr_voyage){
+void Ligne::addVoyage(Voyage* ptr_voyage) {
 	m_voyages.push_back(ptr_voyage);
 }
 
-const std::string& Ligne::getDescription() const{
+const std::string& Ligne::getDescription() const {
 	return m_description;
 }
 
-void Ligne::setDescription(const std::string& p_description){
+void Ligne::setDescription(const std::string& p_description) {
 	m_description = p_description;
 }
 
-friend std::ostream& Ligne::operator <<(std::ostream& f, const Ligne& p_ligne){
-	f << categorieToString(m_categorie) << " " << m_id << " : " << (this ->getDestinations())[0] << " - " <<
-			(this ->getDestinations())[1] << endl;
+std::ostream& operator <<(std::ostream& f, const Ligne& p_ligne) {
+	f << Ligne::categorieToString(p_ligne.getCategorie()) << " "
+			<< p_ligne.getId() << " : " << p_ligne.getDestinations().first
+			<< " - " << p_ligne.getDestinations().second;
 	return f;
 }
-
-
 

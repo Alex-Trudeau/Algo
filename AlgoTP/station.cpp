@@ -13,11 +13,11 @@ namespace tp {
 Station::Station(const std::vector<std::string>& p_ligne):
 	m_id(std::stoi(p_ligne[0])),m_nom(p_ligne[1]),
 	m_description(p_ligne[3]),m_coords(std::stod(p_ligne[4]),std::stod(p_ligne[5])),
-	m_voyages_passants(std::vector<Voyage* >){
+	m_voyages_passants(std::vector<Voyage*>()){
 	// INIT VECTEUR VOYAGE
 }
 
-friend std::ostream& Station::operator<<(std::ostream& flux, const Station& p_station){
+std::ostream& operator<<(std::ostream& flux, const Station& p_station){
 	// AFFICHER QUOI??
 }
 

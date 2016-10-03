@@ -8,6 +8,9 @@
 #include "coordonnees.h"
 #include "ContratException.h"
 #include <sstream>
+#include <iostream>
+#include <vector>
+#include <string>
 #include <cmath>
 
 Coordonnees::Coordonnees(double p_latitude, double p_longitude) :
@@ -33,9 +36,8 @@ void Coordonnees::setLongitude(double p_longitude) {
 	m_longitude = p_longitude;
 }
 
-static bool Coordonnees::is_valide_coord(double p_latitude,
-		double p_longitude) {
-	if (p_latitude >= 0 && p_latitude <= 90 && p_longitude >= -180
+bool Coordonnees::is_valide_coord(double p_latitude, double p_longitude) {
+	if (p_latitude >= -90 && p_latitude <= 90 && p_longitude >= -180
 			&& p_longitude <= 180)
 		return true;
 	else
@@ -51,12 +53,11 @@ double Coordonnees::operator-(const Coordonnees & p_other) const {
 							+ cos(this->getLatitude())
 									* cos(p_other.getLatitude())
 									* pow(sin(d_lon / 2), 2)));
-	return 2 * earth_radius_km * a;
+	return 2 * M_EARTH_RADIUS * a;
 }
 
-friend std::ostream & Coordonnees::operator<<(std::ostream & p_flux,
-		const Coordonnees & p_coord) {
-	p_flux << p_coord.m_latitude << ", " << p_coord.m_longitude << endl;
+std::ostream & operator<<(std::ostream & p_flux, const Coordonnees & p_coord) {
+	p_flux << p_coord.m_latitude << ", " << p_coord.m_longitude;
 	return p_flux;
 }
 
