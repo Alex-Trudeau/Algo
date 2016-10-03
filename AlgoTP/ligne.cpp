@@ -22,7 +22,7 @@ CategorieBus Ligne::couleurToCategorie(std::string p_couleur) {
 		return CategorieBus::LEBUS;
 	if (p_couleur == "E04503")
 		return CategorieBus::EXPRESS;
-	if (p_couleur == "1A171B")
+	if (p_couleur == "1A171B" || p_couleur == "003888")
 		return CategorieBus::COUCHE_TARD;
 }
 
