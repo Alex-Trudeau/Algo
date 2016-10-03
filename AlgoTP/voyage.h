@@ -13,8 +13,7 @@
 
 class Ligne;
 class Station;
-
-namespace tp {
+class Heure;
 
 /*!
  * \class Voyage
@@ -50,6 +49,5 @@ private:
 	std::vector<Arret> m_arrets;
 };
 
-}
 
 #endif //RTC_VOYAGE_H

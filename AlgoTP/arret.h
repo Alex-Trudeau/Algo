@@ -10,7 +10,6 @@
 
 #include "auxiliaires.h"
 
-namespace tp{
 
 /*!
 * \class Arret
@@ -49,6 +48,5 @@ private:
 	std::string m_voyage_id;
 };
 
-}
 
 #endif //RTC_ARRET_H

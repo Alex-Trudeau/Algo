@@ -6,45 +6,39 @@
  */
 
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <fstream>
 #include <string>
-//#include "arret.h"
 #include "auxiliaires.h"
 #include "coordonnees.h"
-#include "ligne.h"
+#include "arret.h"
+
 #include "station.h"
-//#include "voyage.h"
+#include "voyage.h"
+#include "ligne.h"
 
 using namespace std;
-using namespace tp;
+
+template <typename Object>
+void importer(string p_nom_fichier, vector<Object> & p_obj, bool rm_entete){
+	vector<vector<string>> objs;
+	lireFichier(p_nom_fichier,objs,',',rm_entete);
+	for(int i = 0; i < objs.size(); i++){
+		p_obj.push_back(Object(objs[i]));
+	}
+}
 
 int main(){
+	vector<Station> v_stations;
+	vector<Ligne> v_lignes;
 
-	vector<string> test;
-	string line_;
-	ifstream file_("TXT/routes.txt");
+	importer("TXT/stops.txt",v_stations,true);
+	importer("TXT/routes.txt",v_lignes,true);
 
-	if(file_.is_open()){
-		while(getline(file_,line_))
-		{
-			test.push_back(line_);
-		}
-		file_.close();
 
-		unsigned int taille = test.size();
-		for (unsigned int i = 0; i < taille; i++){
-			cout << test[i] << endl;
-
-		}
-
-	}
-	else {
-		cout<<"File isn't open"<< '\n';
-	}
-
-	split(test[1], ',');
-
+	cout << v_stations.size() << " Stations" << endl;
+	cout << v_lignes.size() << " Lignes" << endl;
 
 	return 0;
 }

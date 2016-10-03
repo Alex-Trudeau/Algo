@@ -14,12 +14,12 @@
 
 using namespace std;
 
-namespace tp{
-
-std::vector<std::string> split(const std::string &s, char delim){
+std::vector<std::string> split(const std::string &s, char delim) {
 	std::istringstream splitter(s);
 	std::vector<std::string> tokens;
-	for (std::string partie; std::getline(splitter, partie, delim); tokens.push_back(partie));
+	for (std::string partie; std::getline(splitter, partie, delim);
+			tokens.push_back(partie))
+		;
 	//cette ligne etait pour test  cout << tokens[4] << endl;
 	return tokens;
 
@@ -34,26 +34,55 @@ std::vector<std::string> split(const std::string &s, char delim){
  * \pre Le fichier existe.
  * \exception logic_error s'il y a un problème lors de l'ouverture du fichier.
  */
-void lireFichier(std::string nomFichier, std::vector<std::vector<std::string>>& resultats, char delimiteur, bool rm_entete){
+void lireFichier(std::string nomFichier,
+		std::vector<std::vector<std::string>>& resultats, char delimiteur,
+		bool rm_entete) {
 	ifstream fichier(nomFichier);
 	string ligne;
-	vector<vector<string>> test;
-	if(fichier.is_open()){
-			while(getline(fichier,ligne))
-			{
-				test.push_back( split(ligne,delimiteur) );
-			}
-			fichier.close();
-
-
-
-
+	if (fichier.is_open()) {
+		if (rm_entete)
+			getline(fichier, ligne);
+		while (getline(fichier, ligne)) {
+			resultats.push_back(split(ligne, delimiteur));
 		}
-		else {
-			//raise logic_error
-		}
+		fichier.close();
 
+	} else {
+		//raise logic_error
+	}
 
 }
 
-} // Namespace tp
+Date::Date() {
+}
+Date::Date(unsigned int an, unsigned int mois, unsigned int jour) {
+}
+bool Date::operator==(const Date & other) const {
+}
+bool Date::operator<(const Date & other) const {
+}
+bool Date::operator>(const Date & other) const {
+}
+std::ostream & operator<<(std::ostream & flux, const Date & p_date) {
+}
+
+Heure::Heure() {
+}
+Heure::Heure(unsigned int heure, unsigned int min, unsigned int sec) {
+}
+Heure Heure::add_secondes(unsigned int secs) const {
+}
+bool Heure::operator==(const Heure & other) const {
+}
+bool Heure::operator<(const Heure & other) const {
+}
+bool Heure::operator>(const Heure & other) const {
+}
+bool Heure::operator<=(const Heure & other) const {
+}
+bool Heure::operator>=(const Heure & other) const {
+}
+int Heure::operator-(const Heure & other) const {
+}
+std::ostream & operator<<(std::ostream & flux, const Heure & p_heure) {
+}

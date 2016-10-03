@@ -4,17 +4,16 @@
  *  Created on: 2016-09-22
  *      Author: etudiant
  */
+
 #include "station.h"
 
 using namespace std;
 
-namespace tp {
-
 Station::Station(const std::vector<std::string>& p_ligne):
 	m_id(std::stoi(p_ligne[0])),m_nom(p_ligne[1]),
-	m_description(p_ligne[3]),m_coords(std::stod(p_ligne[4]),std::stod(p_ligne[5])),
+	m_description(p_ligne[2]),m_coords(Coordonnees(std::stod(p_ligne[3]),std::stod(p_ligne[4]))),
 	m_voyages_passants(std::vector<Voyage*>()){
-	// INIT VECTEUR VOYAGE
+
 }
 
 std::ostream& operator<<(std::ostream& flux, const Station& p_station){
@@ -68,7 +67,4 @@ void Station::addVoyage(Voyage* ptr_voyage){
 double Station::distance(const Station& p_station) const{
 	return this->getCoords()-p_station.getCoords();
 }
-
-
-} // fin namespace tp
 

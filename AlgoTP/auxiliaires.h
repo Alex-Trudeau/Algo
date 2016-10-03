@@ -11,9 +11,6 @@
 #include <iostream>
 #include <sstream>
 
-namespace tp{
-
-
 /*!
  * \brief Cette fonction permet de séparer une chaine de caractère en un vecteur de chaines de caractère séparés par un délimiteur
  * Par exemple "toto,tata,tutu" séparé par une virgule donnerait un vecteur contenant "toto", "tata", "tutu"
@@ -80,6 +77,5 @@ private:
 	unsigned int m_sec;
 };
 
-}
 
 #endif //RTC_AUXILIAIRES_H

@@ -8,15 +8,12 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "auxiliaires.h"
 #include "coordonnees.h"
 #include "ligne.h"
 #include "voyage.h"
 
 class Voyage;
 class Ligne;
-
-namespace tp {
 
 /*!
  * \class Station
@@ -49,6 +46,5 @@ public:
 	double distance(const Station& p_station) const;
 };
 
-} // Namespace tp
 
 #endif //RTC_STATION_H

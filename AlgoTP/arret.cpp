@@ -9,8 +9,6 @@
 
 using namespace std;
 
-namespace tp {
-
 Arret::Arret(const std::vector<std::string>& ligne_gtfs) {
 
 }
@@ -66,5 +64,3 @@ bool Arret::operator>(const Arret & p_other) const {
 std::ostream & operator<<(std::ostream & flux, const Arret & p_arret) {
 
 }
-
-} // Namespace tp
