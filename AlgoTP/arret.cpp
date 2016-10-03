@@ -15,6 +15,7 @@ Arret::Arret(const std::vector<std::string>& p_l):
 	m_station_id(p_l[3]),
 	m_numero_sequence(p_l[4]){
 
+
 }
 
 const Heure& Arret::getHeureArrivee() const {

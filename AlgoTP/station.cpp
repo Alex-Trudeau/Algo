@@ -17,7 +17,8 @@ Station::Station(const std::vector<std::string>& p_ligne):
 }
 
 std::ostream& operator<<(std::ostream& flux, const Station& p_station){
-	//return ostream << p_station;
+	return  flux << p_station.m_id << p_station.m_nom << p_station.m_description;
+	//p-e ajouter d'autre trucs jai mit les attribs random pcq cest ce principe la qui faut faire
 }
 
 const Coordonnees& Station::getCoords() const{
@@ -37,9 +38,14 @@ void Station::setDescription(const std::string& p_description){
 }
 
 std::vector<Ligne*> Station::getLignesPassantes() const{
-	// PAS SUR POUR TOUT SUITE
-	//iterate dans tout les voyages passants pour aller chercher voyage.getline();
-	//ajouter le résultat dans vector ligne le return
+	std::vector<Ligne*> test;
+	for(int i =0 ; m_voyages_passants.size(); i++){
+
+		test.push_back(m_voyages_passants[i]->getLigne());
+
+	}
+
+	return test;
 }
 
 const std::string& Station::getNom() const{
@@ -63,7 +69,6 @@ const std::vector<Voyage*> & Station::getVoyagesPassants() const{
 }
 
 void Station::addVoyage(Voyage* ptr_voyage){
-	// PAS SUR POUR TOUT SUITE
 	m_voyages_passants.push_back(ptr_voyage);
 }
 
