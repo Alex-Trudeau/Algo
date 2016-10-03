@@ -40,10 +40,5 @@ int main(){
 	cout << v_stations.size() << " Stations" << endl;
 	cout << v_lignes.size() << " Lignes" << endl;
 
-	Heure h = Heure(2,25,34);
-	Heure h1 = Heure(25,25,35);
-
-	cout << h1 - h << endl;
-
 	return 0;
 }
