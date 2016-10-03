@@ -76,7 +76,7 @@ Date::Date(unsigned int an, unsigned int mois, unsigned int jour):
 	PRECONDITION(jour > 0 && jour <= JourParMois[mois-1]);
 }
 bool Date::operator==(const Date & other) const {
-	return (this->m_an == other.m_an && this->m_mois == other.m_mois && this->m_jour == other.m_jour)
+	return (this->m_an == other.m_an && this->m_mois == other.m_mois && this->m_jour == other.m_jour);
 }
 bool Date::operator<(const Date & other) const {
 	if(this->m_an < other.m_an)

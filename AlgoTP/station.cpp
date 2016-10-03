@@ -17,7 +17,7 @@ Station::Station(const std::vector<std::string>& p_ligne):
 }
 
 std::ostream& operator<<(std::ostream& flux, const Station& p_station){
-	// AFFICHER QUOI??
+	//return ostream << p_station;
 }
 
 const Coordonnees& Station::getCoords() const{
@@ -38,6 +38,8 @@ void Station::setDescription(const std::string& p_description){
 
 std::vector<Ligne*> Station::getLignesPassantes() const{
 	// PAS SUR POUR TOUT SUITE
+	//iterate dans tout les voyages passants pour aller chercher voyage.getline();
+	//ajouter le résultat dans vector ligne le return
 }
 
 const std::string& Station::getNom() const{
@@ -57,11 +59,12 @@ void Station::setId(unsigned int p_id){
 }
 
 const std::vector<Voyage*> & Station::getVoyagesPassants() const{
-	// PAS SUR POUR TOUT SUITE
+	return m_voyages_passants;
 }
 
 void Station::addVoyage(Voyage* ptr_voyage){
 	// PAS SUR POUR TOUT SUITE
+	m_voyages_passants.push_back(ptr_voyage);
 }
 
 double Station::distance(const Station& p_station) const{
