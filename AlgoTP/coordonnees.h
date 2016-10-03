@@ -9,6 +9,8 @@
 #include <iostream>
 #include <sstream>
 
+namespace tp {
+
 #define M_PI    3.1415926535897932384626433832795
 #define M_EARTH_RADIUS 6371.0
 
@@ -43,5 +45,6 @@ private:
     double m_longitude;
 };
 
+}
 
 #endif //RTC_COORDONNEES_H

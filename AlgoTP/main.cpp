@@ -9,10 +9,15 @@
 #include <vector>
 #include <fstream>
 #include <string>
+//#include "arret.h"
 #include "auxiliaires.h"
+#include "coordonnees.h"
 #include "ligne.h"
+#include "station.h"
+//#include "voyage.h"
 
 using namespace std;
+using namespace tp;
 
 int main(){
 

@@ -11,15 +11,15 @@
 #include "station.h"
 #include "auxiliaires.h"
 
+class Voyage;
+
+namespace tp {
 /*!
  * \enum CategorieBus
  * \brief Représente les différentes catégories de bus
  *
  */
 enum class CategorieBus {METRO_BUS, LEBUS, EXPRESS, COUCHE_TARD};
-
-class Voyage;
-
 
 /*!
  * \class Ligne
@@ -55,5 +55,6 @@ public:
 	friend std::ostream& operator <<(std::ostream& f, const Ligne& p_ligne);
 };
 
+}
 
 #endif //RTC_LIGNE_H

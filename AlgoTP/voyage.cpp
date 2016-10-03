@@ -10,7 +10,7 @@
 #include <sstream>
 #include <iostream>
 
-
+namespace tp {
 
 	Voyage::Voyage(const std::vector<std::string>& ligne_gtfs, Ligne* p_ligne){}
 	Arret & Voyage::arretDeLaStation(unsigned int p_num_station){}
@@ -29,3 +29,5 @@
 	bool Voyage::operator< (const Voyage & p_other) const{}
 	bool Voyage::operator> (const Voyage & p_other) const{}
 	std::ostream & operator<<(std::ostream & flux, const Voyage & p_voyage){}
+
+}

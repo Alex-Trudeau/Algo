@@ -16,9 +16,8 @@
 class Voyage;
 class Ligne;
 
-using namespace std;
-
 namespace tp {
+
 /*!
  * \class Station
  * \brief Classe représentant une station. Une station est un emplacement physique où un bus effectue des arrêts.

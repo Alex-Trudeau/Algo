@@ -14,6 +14,8 @@
 class Ligne;
 class Station;
 
+namespace tp {
+
 /*!
  * \class Voyage
  * \brief Classe permettant de décrire un voyage
@@ -48,5 +50,6 @@ private:
 	std::vector<Arret> m_arrets;
 };
 
+}
 
 #endif //RTC_VOYAGE_H

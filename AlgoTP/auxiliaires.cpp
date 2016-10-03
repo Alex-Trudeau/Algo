@@ -10,8 +10,11 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include "auxiliaires.h"
+
 using namespace std;
 
+namespace tp{
 
 std::vector<std::string> split(const std::string &s, char delim){
 	std::istringstream splitter(s);
@@ -52,3 +55,5 @@ void lireFichier(std::string nomFichier, std::vector<std::vector<std::string>>& 
 
 
 }
+
+} // Namespace tp

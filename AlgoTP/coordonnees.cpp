@@ -13,6 +13,10 @@
 #include <string>
 #include <cmath>
 
+using namespace std;
+
+namespace tp {
+
 Coordonnees::Coordonnees(double p_latitude, double p_longitude) :
 		m_latitude(p_latitude), m_longitude(p_longitude) {
 	PRECONDITION(is_valide_coord(p_latitude, p_longitude));
@@ -64,3 +68,5 @@ std::ostream & operator<<(std::ostream & p_flux, const Coordonnees & p_coord) {
 double Coordonnees::degre_to_radian(double p_deg) {
 	return (p_deg * M_PI / 180.0);
 }
+
+} // Namespace tp
