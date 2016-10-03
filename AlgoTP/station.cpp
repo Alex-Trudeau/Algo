@@ -39,7 +39,7 @@ void Station::setDescription(const std::string& p_description){
 
 std::vector<Ligne*> Station::getLignesPassantes() const{
 	std::vector<Ligne*> test;
-	for(int i =0 ; m_voyages_passants.size(); i++){
+	for(int i =0 ; i < m_voyages_passants.size(); i++){
 
 		test.push_back(m_voyages_passants[i]->getLigne());
 

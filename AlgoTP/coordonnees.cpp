@@ -9,7 +9,6 @@
 #include "ContratException.h"
 #include <sstream>
 #include <iostream>
-#include <iomanip>
 #include <vector>
 #include <string>
 #include <cmath>
@@ -60,10 +59,6 @@ double Coordonnees::operator-(const Coordonnees & p_other) const {
 }
 
 std::ostream & operator<<(std::ostream & p_flux, const Coordonnees & p_coord) {
-	p_flux << setprecision(6) << p_coord.m_latitude << ", " << p_coord.m_longitude;
+	p_flux << p_coord.m_latitude << ", " << p_coord.m_longitude;
 	return p_flux;
 }
-
-/*double Coordonnees::degre_to_radian(double p_deg) {
-	return (p_deg * M_PI / 180.0);
-}*/
