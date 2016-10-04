@@ -10,6 +10,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 #include <ctime>
 #include "auxiliaires.h"
 #include "ContratException.h"
@@ -20,11 +21,11 @@ std::vector<std::string> split(const std::string &s, char delim) {
 	std::istringstream splitter(s);
 	std::vector<std::string> tokens;
 	for (std::string partie; std::getline(splitter, partie, delim);
-			tokens.push_back(partie))
-		;
+			tokens.push_back(partie)){
+		partie.erase(std::remove(partie.begin(), partie.end(), '"'), partie.end());
+	}
 	//cette ligne etait pour test  cout << tokens[4] << endl;
 	return tokens;
-
 }
 
 /*!

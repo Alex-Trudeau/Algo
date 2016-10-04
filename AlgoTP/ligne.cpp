@@ -45,16 +45,19 @@ void Ligne::setCategorie(CategorieBus p_categorie) {
 }
 
 std::pair<std::string, std::string> Ligne::getDestinations() const {	// Marche pas!!!
-	/*std::vector<string> destinations;
+	std::vector<string> destinations;
 	for (int i = 0; i < m_voyages.size(); i++) {	// Doublons?
-		destinations.push_back(m_voyages[i]->getDestination());
+		if(destinations.size() == 0)
+			destinations.push_back(m_voyages[i]->getDestination());
+		else
+			if(m_voyages[i]->getDestination() != destinations[0])
+				destinations.push_back(m_voyages[i]->getDestination());
 	}
 	if (destinations.size() == 1)
 		return {destinations[0], ""};
 	else
-		return {destinations[0], destinations[1]};l
-		*/
-	return {"Chez moi", "Chez toi"};
+		return {destinations[0], destinations[1]};
+	//return {"Chez moi", "Chez toi"};
 }
 
 unsigned int Ligne::getId() const {
@@ -96,6 +99,6 @@ void Ligne::setDescription(const std::string& p_description) {
 std::ostream& operator <<(std::ostream& f, const Ligne& p_ligne) {
 	f << Ligne::categorieToString(p_ligne.getCategorie()) << " "
 			<< p_ligne.getNumero() << " : " << p_ligne.getDestinations().first
-			<< " / " << p_ligne.getDestinations().second;
+			<< " - " << p_ligne.getDestinations().second;
 	return f;
 }
