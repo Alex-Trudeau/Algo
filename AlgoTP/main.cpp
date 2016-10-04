@@ -57,5 +57,9 @@ int main() {
 	cout << v_voyages.size() << " Voyages" << endl;
 	cout << v_arrets.size() << " Arrets" << endl;
 
+	for (unsigned int i=0;i < v_stations.size(); i++){
+		cout << v_stations[i] << endl;
+	}
+
 	return 0;
 }
