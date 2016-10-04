@@ -52,7 +52,7 @@ std::pair<std::string, std::string> Ligne::getDestinations() const {	// Marche p
 	if (destinations.size() == 1)
 		return {destinations[0], ""};
 	else
-		return {destinations[0], destinations[1]};
+		return {destinations[0], destinations[1]};l
 		*/
 	return {"Chez moi", "Chez toi"};
 }

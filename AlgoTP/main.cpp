@@ -38,7 +38,6 @@ void importerVoyages(string p_nom_fichier, vector<Voyage> & p_voyages, vector<Li
 
 		vector<Ligne>::iterator it = find_if(p_lignes.begin(),p_lignes.end(),[id_ligne](const Ligne& lig){return lig.getId() == id_ligne;});
 		p_voyages.push_back(Voyage(objs[i],&(*it)));
-		(*it).addVoyage(&(p_voyages.back()));
 	}
 }
 
@@ -46,25 +45,17 @@ int main() {
 	vector<Station> v_stations;
 	vector<Ligne> v_lignes;
 	vector<Voyage> v_voyages;
+	vector<Arret> v_arrets;
 
 	importer("TXT/stops.txt", v_stations, true);
 	importer("TXT/routes.txt", v_lignes, true);
 	importerVoyages("TXT/trips.txt", v_voyages, v_lignes, true);
+	importer("TXT/stop_times.txt", v_arrets, true);
 
 	cout << v_stations.size() << " Stations" << endl;
 	cout << v_lignes.size() << " Lignes" << endl;
 	cout << v_voyages.size() << " Voyages" << endl;
-
-	for (int i = 0; i < v_lignes.size(); i++){
-		cout << "#################################" << endl;
-		cout << v_lignes[i] << endl;
-		cout << "#################################" << endl;
-		/*vector<Voyage*> voyages = v_lignes[i].getVoyages();
-
-		for(int j =0 ; j< voyages.size(); j++){
-			cout << voyages[j] << endl;
-		}*/
-	}
+	cout << v_arrets.size() << " Arrets" << endl;
 
 	return 0;
 }
