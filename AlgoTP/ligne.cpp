@@ -12,7 +12,6 @@ Ligne::Ligne(const std::vector<std::string>& p_ligne) :
 		m_id(std::stoi(p_ligne[0])), m_numero(p_ligne[2]), m_description(
 				p_ligne[4]), m_categorie(Ligne::couleurToCategorie(p_ligne[7])), m_voyages(
 				std::vector<Voyage*>()) {
-
 }
 
 CategorieBus Ligne::couleurToCategorie(std::string p_couleur) {
@@ -45,9 +44,9 @@ void Ligne::setCategorie(CategorieBus p_categorie) {
 	m_categorie = p_categorie;
 }
 
-std::pair<std::string, std::string> Ligne::getDestinations() const {
+std::pair<std::string, std::string> Ligne::getDestinations() const {	// A revoir
 	std::vector<string> destinations;
-	for (int i = 0; i < m_voyages.size(); i++) {
+	for (int i = 0; i < m_voyages.size(); i++) {	// Doublons?
 		destinations.push_back(m_voyages[i]->getDestination());
 	}
 	if (destinations.size() == 1)

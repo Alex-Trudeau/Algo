@@ -6,16 +6,16 @@
  */
 
 #include "arret.h"
+#include "auxiliaires.h"
 
 using namespace std;
 
-Arret::Arret(const std::vector<std::string>& p_l):
-	m_heure_arrivee(p_l[1]),
-	m_heure_depart(p_l[2]),
-	m_station_id(p_l[3]),
-	m_numero_sequence(p_l[4]){
-
-
+Arret::Arret(const std::vector<std::string>& p_l) :
+		m_voyage_id(p_l[0]), m_station_id(stoi(p_l[3])), m_numero_sequence(stoi(p_l[4])) {
+	vector<string> heure_arr = split(p_l[1],':');
+	vector<string> heure_dep = split(p_l[2],':');
+	m_heure_arrivee = Heure(stoul(heure_arr[0]),stoul(heure_arr[1]),stoul(heure_arr[2]));
+	m_heure_depart = Heure(stoul(heure_dep[0]),stoul(heure_dep[1]),stoul(heure_dep[2]));
 }
 
 const Heure& Arret::getHeureArrivee() const {
