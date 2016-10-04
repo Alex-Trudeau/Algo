@@ -40,8 +40,10 @@ void importerVoyages(string p_nom_fichier, vector<Voyage> & p_voyages, vector<Li
 		p_voyages.push_back(Voyage(objs[i],&(*it)));
 	}
 }
-
-bool triNumeroLigne(const Ligne& l1,const Ligne& l2){
+bool triStationId(const Station& s1, const Station& s2){
+	return s1.getId() < s2.getId();
+}
+bool triLigneNumero(const Ligne& l1,const Ligne& l2){
 	return l1.getNumero() < l2.getNumero();
 }
 bool triVoyageId(const Voyage& v1, const Voyage& v2){
@@ -54,9 +56,10 @@ int main() {
 	vector<Arret> v_arrets;
 
 	importer("TXT/stops.txt", v_stations, true);
+	sort(v_stations.begin(),v_stations.end(),triStationId);
 
 	importer("TXT/routes.txt", v_lignes, true);
-	sort(v_lignes.begin(),v_lignes.end(),triNumeroLigne);
+	sort(v_lignes.begin(),v_lignes.end(),triLigneNumero);
 
 	importerVoyages("TXT/trips.txt", v_voyages, v_lignes, true);
 	sort(v_voyages.begin(),v_voyages.end(),triVoyageId);
@@ -77,15 +80,15 @@ int main() {
 	//cout << (*v_lignes[0].getVoyages()[0]) << endl;
 
 
-	// ### Afficher lignes ordre numero
-	for (int l = 0; l < v_lignes.size(); l++){
+	// ### Afficher lignes ordre numero ### ok
+	/*for (int l = 0; l < v_lignes.size(); l++){
 		cout << v_lignes[l] << endl;
-	}
-
-	// ### Afficher stations ### Manque ordre numero
-	/*for (unsigned int i=0;i < v_stations.size(); i++){
-		cout << v_stations[i] << endl;
 	}*/
+
+	// ### Afficher stations ###
+	for (unsigned int i=0;i < v_stations.size(); i++){
+		cout << v_stations[i] << endl;
+	}
 
 	return 0;
 }

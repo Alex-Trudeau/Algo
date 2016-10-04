@@ -98,7 +98,6 @@ void Ligne::setDescription(const std::string& p_description) {
 
 std::ostream& operator <<(std::ostream& f, const Ligne& p_ligne) {
 	f << Ligne::categorieToString(p_ligne.getCategorie()) << " "
-			<< p_ligne.getNumero() << " : " << p_ligne.getDestinations().first
-			<< " - " << p_ligne.getDestinations().second;
+			<< p_ligne.getNumero() << " : " << p_ligne.getDescription();
 	return f;
 }

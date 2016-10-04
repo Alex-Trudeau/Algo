@@ -12,7 +12,7 @@
 
 using namespace std;
 
-Voyage::Voyage(const std::vector<std::string>& p_l, Ligne* p_ligne) :	// FLUSHER NORD SUD EST OUEST DE DESTINATION
+Voyage::Voyage(const std::vector<std::string>& p_l, Ligne* p_ligne) :
 		m_id(p_l[2]), m_destination(p_l[3]), m_service_id(p_l[1]), m_ligne(p_ligne) {
 }
 Arret & Voyage::arretDeLaStation(unsigned int p_num_station) {
