@@ -50,12 +50,19 @@ int main() {
 	importer("TXT/stops.txt", v_stations, true);
 	importer("TXT/routes.txt", v_lignes, true);
 	importerVoyages("TXT/trips.txt", v_voyages, v_lignes, true);
-	importer("TXT/stop_times.txt", v_arrets, true);
+	//importer("TXT/stop_times.txt", v_arrets, true);
+
+	for (int i = 0; i < v_voyages.size(); i++){
+		v_voyages[i].getLigne()->addVoyage(&v_voyages[i]);
+	}
 
 	cout << v_stations.size() << " Stations" << endl;
 	cout << v_lignes.size() << " Lignes" << endl;
 	cout << v_voyages.size() << " Voyages" << endl;
 	cout << v_arrets.size() << " Arrets" << endl;
+
+
+	cout << (*v_lignes[0].getVoyages()[0]) << endl;
 
 	return 0;
 }
