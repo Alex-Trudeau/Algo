@@ -59,11 +59,11 @@ void Arret::setVoyageId(const std::string& p_voyageId) {
 }
 
 bool Arret::operator<(const Arret & p_other) const {
-	// Pas fait
+	return this->getNumeroSequence() < p_other.getNumeroSequence();
 }
 
 bool Arret::operator>(const Arret & p_other) const {
-	// Pas fait
+	return this->getNumeroSequence() > p_other.getNumeroSequence();
 }
 
 std::ostream & operator<<(std::ostream & flux, const Arret & p_arret) {

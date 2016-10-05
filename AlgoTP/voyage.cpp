@@ -9,6 +9,7 @@
 #include "voyage.h"
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -60,15 +61,8 @@ Heure Voyage::getHeureFin() const {
 	return m_arrets.back().getHeureArrivee();
 }
 void Voyage::setArrets(std::vector<Arret>& resultat) {
-	for (unsigned int i = 0; i < resultat.size(); i++) {
-		for (unsigned int j = 0; j < resultat.size(); j++){
-			if(resultat[i] < resultat[j]){
-				Arret tmp = resultat[i];
-				resultat[i] = resultat[j];
-				resultat[j] = tmp;
-			}
-		}
-	}
+	sort(resultat.begin(),resultat.end());
+	m_arrets = resultat;
 }
 bool Voyage::operator<(const Voyage & p_other) const {
 	return (this->getHeureDepart() < p_other.getHeureDepart());
