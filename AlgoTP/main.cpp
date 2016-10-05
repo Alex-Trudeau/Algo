@@ -78,12 +78,12 @@ int main() {
 
 	importerVoyages("TXT/trips.txt", v_voyages, v_lignes, true);
 	sort(v_voyages.begin(),v_voyages.end(),triVoyageId);
-	for (int i = 0; i < v_voyages.size(); i++){
+	for (unsigned int i = 0; i < v_voyages.size(); i++){
 		v_voyages[i].getLigne()->addVoyage(&v_voyages[i]);
 	}
 
 	importerArrets("TXT/stop_times.txt", v_arrets, true);
-	for (int a = 0; a < v_voyages.size(); a++){
+	for (unsigned int a = 0; a < v_voyages.size(); a++){
 		if(v_arrets.count(v_voyages[a].getId()))
 			v_voyages[a].setArrets(v_arrets[v_voyages[a].getId()]);
 	}
