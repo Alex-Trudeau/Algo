@@ -1,8 +1,9 @@
-/*
- * auxiliaires.cpp
- *
- *  Created on: 2016-09-22
- *      Author: etudiant
+/**
+ * \file auxiliaires.cpp
+ * \brief
+ * \author Daniel Lavoie Alexandre Trudeau
+ * \version 1
+ * \date  2016-09-22
  */
 
 #include <vector>
@@ -16,7 +17,13 @@
 #include "ContratException.h"
 
 using namespace std;
-
+/*!
+ * \brief Cette fonction permet de séparer une chaine de caractère en un vecteur de chaines de caractère séparés par un délimiteur
+ * Par exemple "toto,tata,tutu" séparé par une virgule donnerait un vecteur contenant "toto", "tata", "tutu"
+ * \param[in] s: la chaine de caractère à séparer
+ * \param[in] delim: le caractère délimitant
+ * \return le vecteur de contenant le résultat
+ */
 std::vector<std::string> split(const std::string &s, char delim) {
 	std::istringstream splitter(s);
 	std::vector<std::string> tokens;
@@ -55,7 +62,9 @@ void lireFichier(std::string nomFichier,
 	}
 
 }
-
+/**
+ * \brief Constructeur sans paramètre
+ */
 Date::Date() {
 	time_t t;
 	time(&t);
@@ -64,6 +73,16 @@ Date::Date() {
 	m_jour = ltm->tm_mday;
 	m_mois = ltm->tm_mon;
 }
+/**
+ * \brief Constructeur avec paramètre
+ * Création d'un objet Date à partir des données passé en paramètre.
+ * \param[in] an
+ * \param[in] mois
+ * \param[in] jour
+ * \pre mois > 0 && < 12
+ * \pre an > 1970 && < 2037
+ * \pre jour > 0 et ne dépasse pas la capacité du mois
+ */
 Date::Date(unsigned int an, unsigned int mois, unsigned int jour):
 	m_an(an), m_mois(mois), m_jour(jour){
 	long JourParMois[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
@@ -76,9 +95,11 @@ Date::Date(unsigned int an, unsigned int mois, unsigned int jour):
 	PRECONDITION(an > 1970 && an < 2037);
 	PRECONDITION(jour > 0 && jour <= JourParMois[mois-1]);
 }
+
 bool Date::operator==(const Date & other) const {
 	return (this->m_an == other.m_an && this->m_mois == other.m_mois && this->m_jour == other.m_jour);
 }
+
 bool Date::operator<(const Date & other) const {
 	if(this->m_an < other.m_an)
 		return true;
@@ -111,7 +132,9 @@ std::ostream & operator<<(std::ostream & flux, const Date & p_date) {
 	flux << p_date.m_an << "-" << p_date.m_mois << "-" << p_date.m_jour;
 	return flux;
 }
-
+/**
+ * \brief Constructeur sans paramètre
+ */
 Heure::Heure() {
 	time_t t;
 	time(&t);
@@ -120,6 +143,16 @@ Heure::Heure() {
 	m_min = ltm->tm_min;
 	m_sec = ltm->tm_sec;
 }
+/**
+ * \brief Constructeur avec paramètre
+ * Création d'un objet Heure à partir des données passé en paramètre.
+ * \param[in] heure
+ * \param[in] min
+ * \param[in] sec
+ * \pre heure >= 0 && < 30
+ * \pre min >= 1970 && < 60
+ * \pre sec >= 0 && < 60
+ */
 Heure::Heure(unsigned int heure, unsigned int min, unsigned int sec) :
 		m_heure(heure), m_min(min), m_sec(sec) {
 	PRECONDITION(heure >= 0 && heure < 30);
@@ -162,6 +195,10 @@ int Heure::operator-(const Heure & other) const {	//retour en secondes
 	return (this->m_heure * 3600 + this->m_min * 60 + this->m_sec)
 			- (other.m_heure * 3600 + other.m_min * 60 + other.m_sec);
 }
+/**
+ * \brief Operator << qui permet d'affiche les informations que l'on veut de l'objet
+ * \return flux
+ */
 std::ostream & operator<<(std::ostream & flux, const Heure & p_heure) {
 	flux << p_heure.m_heure << ":" << p_heure.m_min << ":" << p_heure.m_sec
 			<< endl;

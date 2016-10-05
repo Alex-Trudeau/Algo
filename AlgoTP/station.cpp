@@ -1,8 +1,9 @@
-/*
- * station.cpp
- *
- *  Created on: 2016-09-22
- *      Author: etudiant
+/**
+ * \file station.cpp
+ * \brief
+ * \author Daniel Lavoie Alexandre Trudeau
+ * \version 1
+ * \date  2016-09-22
  */
 
 #include "station.h"
