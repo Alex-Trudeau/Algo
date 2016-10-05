@@ -1,6 +1,6 @@
 /**
  * \file voyage.cpp
- * \brief
+ * \brief Implantation de la classe Voyage
  * \author Daniel Lavoie Alexandre Trudeau
  * \version 1
  * \date  2016-09-22
@@ -22,14 +22,11 @@ using namespace std;
 Voyage::Voyage(const std::vector<std::string>& p_l, Ligne* p_ligne) :
 		m_id(p_l[2]), m_destination(p_l[3]), m_service_id(p_l[1]), m_ligne(p_ligne) {
 }
+
 Arret & Voyage::arretDeLaStation(unsigned int p_num_station) {
 	for (unsigned int i = 0; i < m_arrets.size(); i++){
 		if( m_arrets[i].getStationId() == p_num_station) {
 			return m_arrets[i];
-		}
-
-		else {
-			// la station est pas dans le voyage
 		}
 	}
 }

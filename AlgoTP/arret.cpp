@@ -1,6 +1,6 @@
 /**
  * \file arret.cpp
- * \brief
+ * \brief Implantation de la classe Arret
  * \author Daniel Lavoie Alexandre Trudeau
  * \version 1
  * \date  2016-09-22

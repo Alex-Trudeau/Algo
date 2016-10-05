@@ -1,6 +1,6 @@
 /**
  * \file coordonnees.cpp
- * \brief
+ * \brief Implantation de la classe Coordonnees
  * \author Daniel Lavoie Alexandre Trudeau
  * \version 1
  * \date  2016-09-22

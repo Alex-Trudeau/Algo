@@ -20,9 +20,13 @@ Station::Station(const std::vector<std::string>& p_ligne):
 	m_voyages_passants(std::vector<Voyage*>()){
 
 }
-
+/**
+ * \brief Operator << qui permet d'affiche les informations que l'on veut de l'objet
+ * \return flux
+ */
 std::ostream& operator<<(std::ostream& flux, const Station& p_station){
-	return  flux << p_station.m_id << " - " << p_station.m_nom;
+	flux << p_station.m_id << " - " << p_station.m_nom;
+	return  flux;
 }
 /**
  * \brief Accesseur des coordonnées

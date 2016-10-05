@@ -1,6 +1,6 @@
 /**
  * \file auxiliaires.cpp
- * \brief
+ * \brief Implantation de la classe auxiliaire
  * \author Daniel Lavoie Alexandre Trudeau
  * \version 1
  * \date  2016-09-22
@@ -57,12 +57,12 @@ void lireFichier(std::string nomFichier,
 		fichier.close();
 
 	} else {
-		throw logic_error;l
+		throw logic_error("Problème lors de la lecture du fichier");
 	}
 
 }
 /**
- * \brief Constructeur sans paramètre qui met le currentDate
+ * \brief Constructeur sans paramètre qui met la date du système
  */
 Date::Date() {
 	time_t t;
@@ -132,7 +132,7 @@ std::ostream & operator<<(std::ostream & flux, const Date & p_date) {
 	return flux;
 }
 /**
- * \brief Constructeur sans paramètre
+ * \brief Constructeur sans paramètre qui initie heure a l'heure du systeme
  */
 Heure::Heure() {
 	time_t t;
@@ -158,6 +158,11 @@ Heure::Heure(unsigned int heure, unsigned int min, unsigned int sec) :
 	PRECONDITION(min >= 0 && min < 60);
 	PRECONDITION(sec >= 0 && sec < 60);
 }
+/**
+ * \brief Fonction permettant d'ajouter du temps à une heure
+ * \param[in] secs : des secondes
+ * \return objet heure modifié
+ */
 Heure Heure::add_secondes(unsigned int secs) const {
 	unsigned int sec = m_sec + secs;
 	unsigned int min = m_min;

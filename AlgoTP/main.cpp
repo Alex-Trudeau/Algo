@@ -1,8 +1,9 @@
-/*
- * main.cpp
- *
- *  Created on: 2016-09-22
- *      Author: etudiant
+/**
+ * \file main.cpp
+ * \brief Programme principal
+ * \author Daniel Lavoie Alexandre Trudeau
+ * \version 1
+ * \date  2016-09-22
  */
 
 #include <iostream>
@@ -26,7 +27,7 @@ template<typename Object>
 void importer(string p_nom_fichier, vector<Object> & p_obj, bool rm_entete) {
 	vector<vector<string>> objs;
 	lireFichier(p_nom_fichier, objs, ',', rm_entete);
-	for (int i = 0; i < objs.size(); i++) {
+	for (unsigned int i = 0; i < objs.size(); i++) {
 		p_obj.push_back(Object(objs[i]));
 	}
 }
@@ -34,7 +35,7 @@ void importer(string p_nom_fichier, vector<Object> & p_obj, bool rm_entete) {
 void importerVoyages(string p_nom_fichier, vector<Voyage> & p_voyages, vector<Ligne> & p_lignes, bool rm_entete) {
 	vector<vector<string>> objs;
 	lireFichier(p_nom_fichier, objs, ',', rm_entete);
-	for (int i = 0; i < objs.size(); i++) {
+	for (unsigned int i = 0; i < objs.size(); i++) {
 		unsigned int id_ligne = stoi(objs[i][0]);
 
 		vector<Ligne>::iterator it = find_if(p_lignes.begin(),p_lignes.end(),[id_ligne](const Ligne& lig){return lig.getId() == id_ligne;});
@@ -46,7 +47,7 @@ void importerArrets(string p_nom_fichier, map<string,vector<Arret>> & p_arrets, 
 	vector<vector<string>> objs;
 	lireFichier(p_nom_fichier, objs, ',', rm_entete);
 
-	for (int i = 0; i < objs.size(); i++) {
+	for (unsigned int i = 0; i < objs.size(); i++) {
 		p_arrets[objs[i][0]].push_back(Arret(objs[i]));
 	}
 }
@@ -54,7 +55,7 @@ void importerArrets(string p_nom_fichier, map<string,vector<Arret>> & p_arrets, 
 void importerDates(string p_nom_fichier, map<string,vector<Date>> & p_dates, bool rm_entete){
 	vector<vector<string>> objs;
 	lireFichier(p_nom_fichier, objs, ',', rm_entete);
-	for (int i = 0; i < objs.size(); i++) {
+	for (unsigned int i = 0; i < objs.size(); i++) {
 		unsigned int y = stoul(objs[i][1].substr(0,4));
 		unsigned int m = stoul(objs[i][1].substr(4,2));
 		unsigned int d = stoul(objs[i][1].substr(6,2));
@@ -127,7 +128,7 @@ int main() {
 		ecriture << v_stations[i] << endl;
 	}
 
-	// ### Ecriture des voyages de la journée ###
+	// ### Ecriture des voyages de la journée ### ok
 	Date currentDate = Date();
 	Heure now = Heure();
 	Heure inOneHour = now.add_secondes(3600);
