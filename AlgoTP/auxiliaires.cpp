@@ -22,7 +22,7 @@ using namespace std;
  * Par exemple "toto,tata,tutu" séparé par une virgule donnerait un vecteur contenant "toto", "tata", "tutu"
  * \param[in] s: la chaine de caractère à séparer
  * \param[in] delim: le caractère délimitant
- * \return le vecteur de contenant le résultat
+ * \return le vecteur contenant le résultat
  */
 std::vector<std::string> split(const std::string &s, char delim) {
 	std::istringstream splitter(s);
@@ -31,7 +31,6 @@ std::vector<std::string> split(const std::string &s, char delim) {
 			tokens.push_back(partie)){
 		partie.erase(std::remove(partie.begin(), partie.end(), '"'), partie.end());
 	}
-	//cette ligne etait pour test  cout << tokens[4] << endl;
 	return tokens;
 }
 

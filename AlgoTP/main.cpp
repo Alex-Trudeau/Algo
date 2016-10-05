@@ -94,14 +94,25 @@ int main() {
 	cout << "LIGNES DE LA RTC" << endl;
 	cout << "COMPTE = " << v_lignes.size() << endl;
 	cout << "==================================" << endl;
-	for (int l = 0; l < v_lignes.size(); l++){
+	for (unsigned int l = 0; l < v_lignes.size(); l++){
 		cout << v_lignes[l] << endl;
 	}
 
 	// ### Afficher stations ordre numero ### ok
-	/*for (unsigned int i=0;i < v_stations.size(); i++){
+	cout << "==================================" << endl;
+	cout << "STATIONS DE LA RTC" << endl;
+	cout << "COMPTE = " << v_stations.size() << endl;
+	cout << "=====================================" << endl;
+	for (unsigned int i=0;i < v_stations.size(); i++){
 		cout << v_stations[i] << endl;
-	}*/
+	}
+
+	//cout << "==================================" << endl;
+	//cout << "VOYAGES DE LA JOURNÉE DU " << currentDate << endl;
+	//cout << heureActuel << " - " << HeureActuel+1 << endl;
+	//cout << "COMPTE = " << v_stations.size() << endl;
+	//cout << "=====================================" << endl;
+
 
 	return 0;
 }

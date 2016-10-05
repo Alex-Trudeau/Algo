@@ -108,5 +108,6 @@ bool Arret::operator>(const Arret & p_other) const {
 }
 
 std::ostream & operator<<(std::ostream & flux, const Arret & p_arret) {
-	// Pas fait
+	flux << p_arret.getHeureArrivee() << p_arret.getVoyageId() << endl;
+	return flux;
 }
