@@ -64,6 +64,7 @@ bool triArretNumSeq(const Arret& a1, const Arret& a2){
 	return a1.getNumeroSequence() < a2.getNumeroSequence();
 }
 int main() {
+	Heure start = Heure();
 	vector<Station> v_stations;
 	vector<Ligne> v_lignes;
 	vector<Voyage> v_voyages;
@@ -87,10 +88,15 @@ int main() {
 			v_voyages[a].setArrets(v_arrets[v_voyages[a].getId()]);
 	}
 
+	cout << "Chargement des données terminé en " << Heure()-start << " secondes" << endl;
 	// ### Afficher lignes ordre numero ### ok
-	/*for (int l = 0; l < v_lignes.size(); l++){
+	cout << "==================================" << endl;
+	cout << "LIGNES DE LA RTC" << endl;
+	cout << "COMPTE = " << v_lignes.size() << endl;
+	cout << "==================================" << endl;
+	for (int l = 0; l < v_lignes.size(); l++){
 		cout << v_lignes[l] << endl;
-	}*/
+	}
 
 	// ### Afficher stations ordre numero ### ok
 	/*for (unsigned int i=0;i < v_stations.size(); i++){
