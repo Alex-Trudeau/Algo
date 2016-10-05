@@ -62,15 +62,15 @@ void lireFichier(std::string nomFichier,
 
 }
 /**
- * \brief Constructeur sans paramètre
+ * \brief Constructeur sans paramètre qui met le currentDate
  */
 Date::Date() {
 	time_t t;
 	time(&t);
 	tm *ltm = localtime(&t);
-	m_an = ltm->tm_year;
+	m_an = ltm->tm_year + 1900;
 	m_jour = ltm->tm_mday;
-	m_mois = ltm->tm_mon;
+	m_mois = ltm->tm_mon +1;
 }
 /**
  * \brief Constructeur avec paramètre
@@ -162,11 +162,12 @@ Heure Heure::add_secondes(unsigned int secs) const {
 	unsigned int sec = m_sec + secs;
 	unsigned int min = m_min;
 	unsigned int hr = m_heure;
-	if (sec >= 60) {
+	while (sec >= 60){
 		sec -= 60;
 		min++;
 	}
-	if (min >= 60) {
+
+	while (min >= 60) {
 		min -= 60;
 		hr++;
 	}

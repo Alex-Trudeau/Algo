@@ -64,6 +64,8 @@ bool triArretNumSeq(const Arret& a1, const Arret& a2){
 	return a1.getNumeroSequence() < a2.getNumeroSequence();
 }
 int main() {
+	Date currentDate = Date();
+	Heure currentTime = Heure();
 	Heure start = Heure();
 	vector<Station> v_stations;
 	vector<Ligne> v_lignes;
@@ -107,11 +109,11 @@ int main() {
 		cout << v_stations[i] << endl;
 	}
 
-	//cout << "==================================" << endl;
-	//cout << "VOYAGES DE LA JOURNÉE DU " << currentDate << endl;
-	//cout << heureActuel << " - " << HeureActuel+1 << endl;
-	//cout << "COMPTE = " << v_stations.size() << endl;
-	//cout << "=====================================" << endl;
+	cout << "==================================" << endl;
+	cout << "VOYAGES DE LA JOURNÉE DU " << currentDate << endl;
+	cout << currentTime << " - " << currentTime.add_secondes(3600) << endl;
+	cout << "COMPTE = " << v_stations.size() << endl;
+	cout << "=====================================" << endl;
 
 
 	return 0;
