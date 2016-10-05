@@ -77,52 +77,22 @@ int main() {
 
 	importerVoyages("TXT/trips.txt", v_voyages, v_lignes, true);
 	sort(v_voyages.begin(),v_voyages.end(),triVoyageId);
-
 	for (int i = 0; i < v_voyages.size(); i++){
 		v_voyages[i].getLigne()->addVoyage(&v_voyages[i]);
 	}
 
 	importerArrets("TXT/stop_times.txt", v_arrets, true);
-
-
-	/*for(map<string,vector<Arret>>::iterator it = v_arrets.begin(); it != v_arrets.end(); it++) {
-		cout << (*it).first << endl;
-		for(int e = 0; e < (*it).second.size(); e++){
-			cout << (*it).second[e].getNumeroSequence() << endl;
-		}
-	}*/
-
-	//v_voyages[0].setArrets(v_arrets[v_voyages[0].getId()]);
-
-
 	for (int a = 0; a < v_voyages.size(); a++){
-		if(v_arrets.count(v_voyages[a].getId())){
-			//cout << v_voyages[a].getId() << endl;
-			//cout << v_arrets[v_voyages[a].getId()].size() << " Arrets" << endl;
+		if(v_arrets.count(v_voyages[a].getId()))
 			v_voyages[a].setArrets(v_arrets[v_voyages[a].getId()]);
-		}
-
 	}
-
-
-
-	cout << v_stations.size() << " Stations" << endl;
-	cout << v_lignes.size() << " Lignes" << endl;
-	cout << v_voyages.size() << " Voyages" << endl;
-
-	/*for(map<string,vector<Arret>>::iterator it = v_arrets.begin(); it != v_arrets.end(); it++) {
-		(*it).first
-	}*/
-
-	//cout << (*v_lignes[0].getVoyages()[0]) << endl;
-
 
 	// ### Afficher lignes ordre numero ### ok
 	/*for (int l = 0; l < v_lignes.size(); l++){
 		cout << v_lignes[l] << endl;
 	}*/
 
-	// ### Afficher stations ###
+	// ### Afficher stations ordre numero ### ok
 	/*for (unsigned int i=0;i < v_stations.size(); i++){
 		cout << v_stations[i] << endl;
 	}*/
