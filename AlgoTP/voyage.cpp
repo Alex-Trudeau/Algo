@@ -116,6 +116,12 @@ Heure Voyage::getHeureFin() const {
  */
 void Voyage::setArrets(std::vector<Arret>& resultat) {
 	sort(resultat.begin(),resultat.end());
+	for (unsigned int a = 1; a < resultat.size(); a++){
+		if(resultat[a].getHeureDepart() == resultat[a-1].getHeureDepart()){
+			resultat[a].setHeureDepart(resultat[a-1].getHeureDepart().add_secondes(30));
+			resultat[a].setHeureArrivee(resultat[a-1].getHeureDepart().add_secondes(30));
+		}
+	}
 	m_arrets = resultat;
 }
 bool Voyage::operator<(const Voyage & p_other) const {
@@ -129,5 +135,5 @@ bool Voyage::operator>(const Voyage & p_other) const {
  * \return flux
  */
 std::ostream & operator<<(std::ostream & flux, const Voyage & p_voyage) {
-	return flux << p_voyage.getLigne()->getNumero() << ": Vers " << p_voyage.getDestination() << endl;
+	return flux << p_voyage.getLigne()->getNumero() << ": Vers " << p_voyage.getDestination();
 }

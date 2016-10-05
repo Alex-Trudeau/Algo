@@ -57,7 +57,7 @@ void lireFichier(std::string nomFichier,
 		fichier.close();
 
 	} else {
-		//raise logic_error
+		throw logic_error;l
 	}
 
 }
@@ -200,7 +200,6 @@ int Heure::operator-(const Heure & other) const {	//retour en secondes
  * \return flux
  */
 std::ostream & operator<<(std::ostream & flux, const Heure & p_heure) {
-	flux << p_heure.m_heure << ":" << p_heure.m_min << ":" << p_heure.m_sec
-			<< endl;
+	flux << p_heure.m_heure << ":" << p_heure.m_min << ":" << p_heure.m_sec;
 	return flux;
 }
