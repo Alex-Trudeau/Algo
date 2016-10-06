@@ -151,15 +151,15 @@ Heure::Heure() {
  * \param[in] heure
  * \param[in] min
  * \param[in] sec
- * \pre heure >= 0 && < 30
- * \pre min >= 1970 && < 60
- * \pre sec >= 0 && < 60
+ * \pre heure < 30
+ * \pre min < 60
+ * \pre sec < 60
  */
 Heure::Heure(unsigned int heure, unsigned int min, unsigned int sec) :
 		m_heure(heure), m_min(min), m_sec(sec) {
-	PRECONDITION(heure >= 0 && heure < 30);
-	PRECONDITION(min >= 0 && min < 60);
-	PRECONDITION(sec >= 0 && sec < 60);
+	PRECONDITION(heure < 30);
+	PRECONDITION(min < 60);
+	PRECONDITION(sec < 60);
 }
 /**
  * \brief Fonction permettant d'ajouter du temps à une heure
