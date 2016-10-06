@@ -114,7 +114,7 @@ Heure Voyage::getHeureFin() const {
 void Voyage::setArrets(std::vector<Arret>& resultat) {
 	sort(resultat.begin(),resultat.end());
 	for (unsigned int a = 1; a < resultat.size(); a++){
-		if(resultat[a].getHeureDepart() == resultat[a-1].getHeureDepart()){
+		if(resultat[a].getHeureDepart() <= resultat[a-1].getHeureDepart()){
 			resultat[a].setHeureDepart(resultat[a-1].getHeureDepart().add_secondes(30));
 			resultat[a].setHeureArrivee(resultat[a-1].getHeureDepart().add_secondes(30));
 		}

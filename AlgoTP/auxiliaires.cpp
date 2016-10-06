@@ -10,6 +10,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <algorithm>
 #include <ctime>
@@ -79,7 +80,7 @@ Date::Date() {
  * \param[in] mois
  * \param[in] jour
  * \pre mois > 0 && < 12
- * \pre an > 1970 && < 2037
+ * \pre an > 1900 && < 2100
  * \pre jour > 0 et ne dépasse pas la capacité du mois
  */
 Date::Date(unsigned int an, unsigned int mois, unsigned int jour):
@@ -91,7 +92,7 @@ Date::Date(unsigned int an, unsigned int mois, unsigned int jour):
 			JourParMois[1]++;
 
 	PRECONDITION(mois > 0 && mois <= 12);
-	PRECONDITION(an > 1970 && an < 2037);
+	PRECONDITION(an > 1900 && an < 2100);
 	PRECONDITION(jour > 0 && jour <= JourParMois[mois-1]);
 }
 
@@ -128,7 +129,9 @@ bool Date::operator>(const Date & other) const {
 	return false;
 }
 std::ostream & operator<<(std::ostream & flux, const Date & p_date) {
-	flux << p_date.m_an << "-" << p_date.m_mois << "-" << p_date.m_jour;
+	flux << p_date.m_an << "-";
+	flux << std::setw(2) << std::setfill('0') << p_date.m_mois << "-";
+	flux << std::setw(2) << std::setfill('0') << p_date.m_jour;
 	return flux;
 }
 /**
@@ -205,6 +208,8 @@ int Heure::operator-(const Heure & other) const {	//retour en secondes
  * \return flux
  */
 std::ostream & operator<<(std::ostream & flux, const Heure & p_heure) {
-	flux << p_heure.m_heure << ":" << p_heure.m_min << ":" << p_heure.m_sec;
+	flux << std::setw(2) << std::setfill('0') << p_heure.m_heure << ":";
+	flux << std::setw(2) << std::setfill('0') << p_heure.m_min << ":";
+	flux << std::setw(2) << std::setfill('0') << p_heure.m_sec;
 	return flux;
 }

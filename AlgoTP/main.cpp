@@ -138,18 +138,14 @@ int main() {
 	// Definition des variables de la date et heure actuelle
 	Date currentDate = Date();
 	Heure now = Heure();
+	//Date currentDate = Date(2016,9,6);
+	//Heure now = Heure(22,47,52);
 	// Definition d'une variable pour l'heure future dans une heure
 	Heure inOneHour = now.add_secondes(3600);
 	// Definition d'un vecteur de voyages opérationnels au courant de la journée
 	// et dans la prochaine heure
 	vector<Voyage*> voyages2d;
-	// Ecriture des voyages de la journée et dans l'heure actuelle
-	// en ordre d'heure de départ
-	ecriture << "==================================" << endl;
-	ecriture << "VOYAGES DE LA JOURNÉE DU " << currentDate << endl;
-	ecriture << now << " - " << inOneHour << endl;
-	ecriture << "COMPTE = " << v_stations.size() << endl;
-	ecriture << "=====================================" << endl;
+
 	for (unsigned int v = 0; v < v_voyages.size(); v++){
 		vector<Date> dt = v_datesVoyage[v_voyages[v].getServiceId()];	// Extraire les dates opérationnels du service_id
 		vector<Date>::iterator it = find(dt.begin(), dt.end(), currentDate); // Trouver la date courrante dans les dates de service_id
@@ -160,6 +156,13 @@ int main() {
 		}
 	}
 	sort(voyages2d.begin(),voyages2d.end(), triHeureDep);	// Tri du vecteur de voyages opérationnels selon l'heure de depart
+	// Ecriture des voyages de la journée et dans l'heure actuelle
+	// en ordre d'heure de départ
+	ecriture << "==================================" << endl;
+	ecriture << "VOYAGES DE LA JOURNÉE DU " << currentDate << endl;
+	ecriture << now << " - " << inOneHour << endl;
+	ecriture << "COMPTE = " << voyages2d.size() << endl;
+	ecriture << "=====================================" << endl;
 	for(unsigned int vt = 0; vt < voyages2d.size(); vt++){
 		ecriture << (*voyages2d[vt]) << endl;				// Ecrire le voyage
 		for (unsigned int a = 0; a < voyages2d[vt]->getArrets().size(); a++){

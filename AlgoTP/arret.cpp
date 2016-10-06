@@ -7,7 +7,6 @@
  */
 
 #include "arret.h"
-#include "auxiliaires.h"
 
 using namespace std;
 
@@ -17,7 +16,7 @@ using namespace std;
  * \param[in] p_l(ligne_gtfs) Vecteur d'une ligne
  */
 Arret::Arret(const std::vector<std::string>& p_l) :
-		m_voyage_id(p_l[0]), m_station_id(stoi(p_l[3])), m_numero_sequence(stoi(p_l[4])) {
+		m_station_id(stoul(p_l[3])), m_numero_sequence(stoul(p_l[4])), m_voyage_id(p_l[0]) {
 	vector<string> heure_arr = split(p_l[1],':');
 	vector<string> heure_dep = split(p_l[2],':');
 	m_heure_arrivee = Heure(stoul(heure_arr[0]),stoul(heure_arr[1]),stoul(heure_arr[2]));
