@@ -3,6 +3,8 @@
 //
 
 #include <iostream>
+#include <unordered_map>
+#include <vector>
 
 #ifndef Reseau__H
 #define Reseau__H
@@ -14,7 +16,7 @@
  *
  */
 typedef std::unordered_map<unsigned int, std::pair<unsigned int, unsigned int> > liste_arcs;
-
+typedef std::unordered_map<unsigned int, liste_arcs> liste_sommets;
 
 /*!
  * \class Reseau
@@ -53,6 +55,11 @@ public:
 
 private:
 	/** À compléter */
+
+	liste_sommets m_lst_adj;
+
+
+
 
 };
 

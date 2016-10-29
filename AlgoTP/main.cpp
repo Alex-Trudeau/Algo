@@ -21,6 +21,8 @@
 #include "voyage.h"
 #include "ligne.h"
 #include "traitementDonnees.h"
+#include "affichage.h"
+#include "reseau.h"
 
 using namespace std;
 
@@ -39,14 +41,24 @@ int main() {
 	cout << tempsTraitement(start) << endl;
 
 	// TP1
-	ofstream ecriture;
-	ecriture.open("FichierSortie.txt");
-	tp1(ecriture,v_lignes,v_stations,v_voyages,v_datesVoyage);
-	ecriture.close();	// Fermer le fichier d'écriture
+	//ofstream ecriture;
+	//ecriture.open("FichierSortie.txt");
+	//tp1(ecriture,v_lignes,v_stations,v_voyages,v_datesVoyage);
+	//ecriture.close();	// Fermer le fichier d'écriture
 
 	// TP2
-
-
+	Reseau rs = Reseau();
+	rs.ajouterSommet(1);
+	rs.ajouterSommet(1);
+	rs.ajouterSommet(2);
+	rs.ajouterSommet(3);
+	rs.ajouterSommet(4);
+	cout << rs.nombreSommets() << endl;
+	rs.ajouterArc(1,1,4);
+	rs.ajouterArc(1,1,4);
+	rs.ajouterArc(1,1,4);
+	rs.ajouterArc(1,1,4);
+	rs.ajouterArc(1,1,4);
 
 
 
