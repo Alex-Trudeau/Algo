@@ -46,8 +46,12 @@ int main() {
 	//tp1(ecriture,v_lignes,v_stations,v_voyages,v_datesVoyage);
 	//ecriture.close();	// Fermer le fichier d'écriture
 
+	cout << "S1 -> " << v_stations[0].getId() << v_stations[0].getCoords() << endl;
+	cout << "S2 -> " << v_stations[1].getId() << v_stations[1].getCoords() << endl;
+	cout << "1 - 2 : " << v_stations[0].getCoords()-v_stations[1].getCoords() << endl;
+
 	// TP2
-	Reseau rs = Reseau();
+	/*Reseau rs = Reseau();
 	rs.ajouterSommet(1);
 	rs.ajouterSommet(1);
 	rs.ajouterSommet(2);
@@ -58,7 +62,7 @@ int main() {
 	rs.ajouterArc(1,1,4);
 	rs.ajouterArc(1,1,4);
 	rs.ajouterArc(1,1,4);
-	rs.ajouterArc(1,1,4);
+	rs.ajouterArc(1,1,4);*/
 
 
 

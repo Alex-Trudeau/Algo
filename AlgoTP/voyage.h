@@ -6,6 +6,7 @@
 #define RTC_VOYAGE_H
 
 #include <string>
+#include <unordered_map>
 #include "arret.h"
 #include "ligne.h"
 #include "station.h"
@@ -13,7 +14,6 @@
 
 class Ligne;
 class Station;
-class Heure;
 
 /*!
  * \class Voyage
@@ -37,6 +37,7 @@ public:
 	Heure getHeureDepart() const;
 	Heure getHeureFin() const;
 	void setArrets(std::vector<Arret>& resultat);
+
 	bool operator< (const Voyage & p_other) const;
 	bool operator> (const Voyage & p_other) const;
 	friend std::ostream & operator<<(std::ostream & flux, const Voyage & p_voyage);
@@ -47,6 +48,8 @@ private:
 	std::string m_service_id;
 	std::string m_destination;
 	std::vector<Arret> m_arrets;
+	std::unordered_map<unsigned int, Arret*> m_arrets_par_station;
+
 };
 
 
