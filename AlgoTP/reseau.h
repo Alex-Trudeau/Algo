@@ -4,7 +4,10 @@
 
 #include <iostream>
 #include <unordered_map>
+#include <algorithm>
 #include <vector>
+#include <queue>
+#include <tuple>
 
 #ifndef Reseau__H
 #define Reseau__H
@@ -15,13 +18,18 @@
 /*!
  *
  */
+
 typedef std::unordered_map<unsigned int, std::pair<unsigned int, unsigned int> > liste_arcs;
-typedef std::unordered_map<unsigned int, liste_arcs> liste_sommets;
+typedef std::unordered_map<unsigned int, liste_arcs> liste_adjacence;
+typedef liste_adjacence::iterator it_sommet_adj;
+typedef liste_adjacence::const_iterator cst_it_sommet_adj;
+typedef liste_arcs::iterator it_arcs;
+typedef liste_arcs::const_iterator cst_it_arcs;
 
 /*!
  * \class Reseau
  * \brief Classe réprésentant un graphe orienté valué. Les sommets du graphe sont tous identifiés par des nombres entiers positifs distincts.
- * Les entre les sommets arcs sont tous identifiés par poids positif ou nul, et un type qui est aussi un entier positif.
+ * Les arcs entre les sommets  sont tous identifiés par poids positif ou nul, et un type qui est aussi un entier positif.
  *
  */
 class Reseau
@@ -56,10 +64,7 @@ public:
 private:
 	/** À compléter */
 
-	liste_sommets m_lst_adj;
-
-
-
+	liste_adjacence m_lst_adj;
 
 };
 

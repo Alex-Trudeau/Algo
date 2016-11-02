@@ -35,7 +35,7 @@ int main() {
 	map<string,vector<Date>> v_datesVoyage;
 
 	// Importation de tous les fichiers nécessaires
-	importer(v_stations, v_lignes, v_voyages, v_arrets, v_datesVoyage);
+	//importer(v_stations, v_lignes, v_voyages, v_arrets, v_datesVoyage);
 
 	// Affichage du temps d'exécution du chargement des données
 	cout << tempsTraitement(start) << endl;
@@ -46,25 +46,35 @@ int main() {
 	//tp1(ecriture,v_lignes,v_stations,v_voyages,v_datesVoyage);
 	//ecriture.close();	// Fermer le fichier d'écriture
 
-	cout << "S1 -> " << v_stations[0].getId() << v_stations[0].getCoords() << endl;
-	cout << "S2 -> " << v_stations[1].getId() << v_stations[1].getCoords() << endl;
-	cout << "1 - 2 : " << v_stations[0].getCoords()-v_stations[1].getCoords() << endl;
-
 	// TP2
-	/*Reseau rs = Reseau();
-	rs.ajouterSommet(1);
+	Reseau rs = Reseau();
+	rs.ajouterSommet(0);
 	rs.ajouterSommet(1);
 	rs.ajouterSommet(2);
 	rs.ajouterSommet(3);
-	rs.ajouterSommet(4);
-	cout << rs.nombreSommets() << endl;
-	rs.ajouterArc(1,1,4);
-	rs.ajouterArc(1,1,4);
-	rs.ajouterArc(1,1,4);
-	rs.ajouterArc(1,1,4);
-	rs.ajouterArc(1,1,4);*/
 
 
+	rs.ajouterArc(0,1,3);
+	rs.ajouterArc(1,2,6);
+	rs.ajouterArc(2,3,2);
+	rs.ajouterArc(3,2,1);
+	rs.ajouterArc(3,1,1);
+	rs.ajouterArc(3,0,12);
 
+	cout << rs.nombreSommets() << " && " << rs.nombreArcs() << endl;
+
+
+	vector<unsigned int> retour;
+
+	int valeur = rs.bellmanFord(0,0,retour);
+
+	cout << "Le chemin le plus court est :" <<endl;
+
+	for(int i =0; i< retour.size(); ++i){
+		cout << retour[i];
+	}
+
+	cout << endl;
+	cout << "et de valeur :" << valeur << endl;
 	return 0;
 }
