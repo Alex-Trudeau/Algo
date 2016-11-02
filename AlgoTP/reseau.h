@@ -4,8 +4,10 @@
 
 #include <iostream>
 #include <unordered_map>
+#include "ContratException.h"
 #include <algorithm>
 #include <vector>
+#include <stack>
 #include <queue>
 #include <tuple>
 
@@ -21,10 +23,11 @@
 
 typedef std::unordered_map<unsigned int, std::pair<unsigned int, unsigned int> > liste_arcs;
 typedef std::unordered_map<unsigned int, liste_arcs> liste_adjacence;
-typedef liste_adjacence::iterator it_sommet_adj;
-typedef liste_adjacence::const_iterator cst_it_sommet_adj;
-typedef liste_arcs::iterator it_arcs;
-typedef liste_arcs::const_iterator cst_it_arcs;
+
+typedef liste_adjacence::iterator it_sommet;
+typedef liste_adjacence::const_iterator cst_it_sommet;
+typedef liste_arcs::iterator it_arc;
+typedef liste_arcs::const_iterator cst_it_arc;
 
 /*!
  * \class Reseau
@@ -63,9 +66,11 @@ public:
 
 private:
 	/** À compléter */
+	liste_adjacence adj;
 
-	liste_adjacence m_lst_adj;
-
+	Reseau inverse() const;
+	void ordreEmpilage(unsigned int s, std::unordered_map<unsigned int, bool> &visite, std::stack<unsigned int> &pile) const;
+	void explore(unsigned int s, std::unordered_map<unsigned int, bool> &visite, std::vector<unsigned int> &res) const;
 };
 
 #endif

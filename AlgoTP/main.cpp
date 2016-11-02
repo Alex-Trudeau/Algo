@@ -48,25 +48,51 @@ int main() {
 
 	// TP2
 	Reseau rs = Reseau();
-	rs.ajouterSommet(0);
 	rs.ajouterSommet(1);
 	rs.ajouterSommet(2);
 	rs.ajouterSommet(3);
+	rs.ajouterSommet(4);
+	rs.ajouterSommet(5);
+	rs.ajouterSommet(6);
+	rs.ajouterSommet(7);
+	rs.ajouterSommet(8);
+	rs.ajouterSommet(9);
+	rs.ajouterSommet(10);
+	rs.ajouterSommet(11);
+	rs.ajouterSommet(12);
 
-
-	rs.ajouterArc(0,1,3);
-	rs.ajouterArc(1,2,6);
-	rs.ajouterArc(2,3,2);
-	rs.ajouterArc(3,2,1);
-	rs.ajouterArc(3,1,1);
-	rs.ajouterArc(3,0,12);
+	rs.ajouterArc(1,2,1);
+	rs.ajouterArc(2,3,1);
+	rs.ajouterArc(2,4,1);
+	rs.ajouterArc(2,5,1);
+	rs.ajouterArc(3,6,1);
+	rs.ajouterArc(5,2,1);
+	rs.ajouterArc(5,6,1);
+	rs.ajouterArc(6,3,1);
+	rs.ajouterArc(5,7,1);
+	rs.ajouterArc(6,8,1);
+	rs.ajouterArc(7,8,1);
+	rs.ajouterArc(7,10,1);
+	rs.ajouterArc(8,11,1);
+	rs.ajouterArc(9,7,1);
+	rs.ajouterArc(10,9,1);
+	rs.ajouterArc(11,12,1);
+	rs.ajouterArc(12,10,1);
 
 	cout << rs.nombreSommets() << " && " << rs.nombreArcs() << endl;
+	vector<vector<unsigned int>> v_ret;
+	int nbCompos = rs.getComposantesFortementConnexes(v_ret);
+	cout << nbCompos << endl;
+	for(int i = 0; i < nbCompos; i++){
+		cout << i << " : {" ;
+		for(unsigned int j =0; j < v_ret[i].size() ; j++){
+			cout << v_ret[i][j] << ", ";
+		}
+		cout << endl;
+	}
+	/*vector<unsigned int> retour;
 
-
-	vector<unsigned int> retour;
-
-	int valeur = rs.bellmanFord(0,0,retour);
+	int valeur = rs.bellmanFord(1,12,retour);
 
 	cout << "Le chemin le plus court est :" <<endl;
 
@@ -75,6 +101,6 @@ int main() {
 	}
 
 	cout << endl;
-	cout << "et de valeur :" << valeur << endl;
+	cout << "et de valeur :" << valeur << endl;*/
 	return 0;
 }

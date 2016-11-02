@@ -9,8 +9,8 @@
 #include <string>
 #include "station.h"
 #include "voyage.h"
-#include "reseau.h"
 #include "auxiliaires.h"
+#include "oldreseau.h"
 
 const double vitesse_de_marche = 5.0; /*! vitesse moyenne de marche d'un humain selon wikipedia */
 

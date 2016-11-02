@@ -1,4 +1,5 @@
 /*
+/*
  * reseau.cpp
  *
  *  Created on: Oct 28, 2016
@@ -13,14 +14,14 @@ Reseau::Reseau(){}
 
 void Reseau::ajouterSommet(unsigned int numero) throw (std::logic_error){
 	if(!sommetExiste(numero))
-		m_lst_adj[numero] = liste_arcs();
+		adj[numero] = liste_arcs();
 	else
 		throw std::logic_error("Sommet deja existant");
 }
 
 void Reseau::enleverSommet(unsigned int numero) throw (std::logic_error){
 	if(sommetExiste(numero))
-		m_lst_adj.erase(numero);
+		adj.erase(numero);
 	else
 		throw std::logic_error("Sommet inexistant");
 }
@@ -30,7 +31,7 @@ void Reseau::ajouterArc(unsigned int numOrigine, unsigned int numDest, unsigned 
 	if(sommetExiste(numOrigine)){
 		if(sommetExiste(numDest)){
 			if(!arcExiste(numOrigine,numDest))
-				m_lst_adj[numOrigine][numDest] = {cout,type};
+				adj[numOrigine][numDest] = {cout,type};
 			else
 				throw std::logic_error("Arc deja existant");
 		}
@@ -43,25 +44,25 @@ void Reseau::ajouterArc(unsigned int numOrigine, unsigned int numDest, unsigned 
 
 void Reseau::enleverArc(unsigned int numOrigine, unsigned int numDest) throw (std::logic_error){
 	if(arcExiste(numOrigine,numDest))
-		m_lst_adj[numOrigine].erase(numDest);
+		adj[numOrigine].erase(numDest);
 	else
 		throw logic_error("Arc inexistant");
 }
 
 void Reseau::majCoutArc(unsigned int numOrigine, unsigned int numDest, unsigned int cout) throw (std::logic_error){
 	if(arcExiste(numOrigine,numDest))
-		m_lst_adj[numOrigine][numDest].first = cout;
+		adj[numOrigine][numDest].first = cout;
 	else
 		throw logic_error("Arc inexistant");
 }
 
 int Reseau::nombreSommets() const{
-	return m_lst_adj.size();
+	return adj.size();
 }
 
 int Reseau::nombreArcs() const{
 	int total = 0;
-	for(cst_it_sommet_adj it = m_lst_adj.begin(); it != m_lst_adj.end(); it++){
+	for(cst_it_sommet it = adj.begin(); it != adj.end(); it++){
 		total +=(*it).second.size();
 	}
 	return total;
@@ -72,12 +73,12 @@ bool Reseau::estVide() const{
 }
 
 bool Reseau::sommetExiste(unsigned int numero) const{
-	return (m_lst_adj.count(numero) > 0);
+	return (adj.count(numero) > 0);
 }
 
 bool Reseau::arcExiste(unsigned int numOrigine, unsigned int numDest) const throw (std::logic_error){
 	if(sommetExiste(numOrigine)){
-		if(m_lst_adj.at(numOrigine).count(numDest) > 0)
+		if(adj.at(numOrigine).count(numDest) > 0)
 			return true;
 	}
 	return false;
@@ -86,7 +87,7 @@ bool Reseau::arcExiste(unsigned int numOrigine, unsigned int numDest) const thro
 int Reseau::getCoutArc(unsigned int numOrig, unsigned int numDest) const throw (std::logic_error){
 	int retour;
 	if(arcExiste(numOrig,numDest))
-		retour = m_lst_adj.at(numOrig).at(numDest).first;
+		retour = adj.at(numOrig).at(numDest).first;
 	else
 		throw logic_error("Arc inexistant");
 	return retour;
@@ -95,7 +96,7 @@ int Reseau::getCoutArc(unsigned int numOrig, unsigned int numDest) const throw (
 int Reseau::getTypeArc(unsigned int numOrig, unsigned int numDest) const throw (std::logic_error){
 	int retour;
 	if(arcExiste(numOrig,numDest))
-		retour = m_lst_adj.at(numOrig).at(numDest).second;
+		retour = adj.at(numOrig).at(numDest).second;
 	else
 		throw logic_error("Arc inexistant");
 	return retour;
@@ -110,13 +111,13 @@ int Reseau::dijkstra(unsigned int numOrig, unsigned int numDest, std::vector<uns
 
 	unordered_map<unsigned int, poidsVisite> visite;
 
-	for(it_sommet_adj it = m_lst_adj.begin(); it != m_lst_adj.end(); ++it){
+	for(it_sommet it = adj.begin(); it != adj.end(); ++it){
 		visite[(*it).first] = {INFINI,false};
 	}
 
 	visite[numOrig].first = 0;
 
-	for(it_sommet_adj it = m_lst_adj.begin(); it != m_lst_adj.end(); ++it){
+	for(it_sommet it = adj.begin(); it != adj.end(); ++it){
 		unsigned int u = NULL;
 		unsigned int du = INFINI;
 
@@ -136,7 +137,7 @@ int Reseau::dijkstra(unsigned int numOrig, unsigned int numDest, std::vector<uns
 		if(u == numDest)
 			return visite[u].first;
 
-		for(it_arcs it3 = m_lst_adj[u].begin(); it3 != m_lst_adj[u].end(); ++it3){
+		for(it_arc it3 = adj[u].begin(); it3 != adj[u].end(); ++it3){
 			unsigned int temp = visite[u].first + (*it3).second.first;
 			if(temp < visite[(*it3).first].first)
 				visite[(*it3).first].first = temp;
@@ -155,7 +156,7 @@ int Reseau::bellmanFord(unsigned int numOrig, unsigned int numDest, std::vector<
 
 	unordered_map<unsigned int, poidsPred> dp;
 
-	for(it_sommet_adj it = m_lst_adj.begin(); it != m_lst_adj.end(); ++it){
+	for(it_sommet it = adj.begin(); it != adj.end(); ++it){
 		dp[(*it).first] = {INFINI,NULL};
 	}
 
@@ -163,11 +164,11 @@ int Reseau::bellmanFord(unsigned int numOrig, unsigned int numDest, std::vector<
 
 	for(int i = 0 ; i < nombreSommets(); i++){
 		int nbRelache = 0;
-		for(it_sommet_adj it = m_lst_adj.begin(); it != m_lst_adj.end(); ++it){
+		for(it_sommet it = adj.begin(); it != adj.end(); ++it){
 			unsigned int u = (*it).first;
-			for(it_arcs it2 = m_lst_adj[u].begin(); it2 != m_lst_adj[u].end(); ++it2){
+			for(it_arc it2 = adj[u].begin(); it2 != adj[u].end(); ++it2){
 				unsigned int v = (*it2).first;
-				unsigned int temp = dp[u].first + m_lst_adj[u][v].first;
+				unsigned int temp = dp[u].first + adj[u][v].first;
 				if(temp < dp[v].first){
 					dp[v].first = temp;
 					dp[v].second = u;
@@ -179,11 +180,11 @@ int Reseau::bellmanFord(unsigned int numOrig, unsigned int numDest, std::vector<
 			break;
 	}
 
-	for(it_sommet_adj it = m_lst_adj.begin(); it != m_lst_adj.end(); ++it){
+	for(it_sommet it = adj.begin(); it != adj.end(); ++it){
 		unsigned int u = (*it).first;
-		for(it_arcs it2 = m_lst_adj[u].begin(); it2 != m_lst_adj[u].end(); ++it2){
+		for(it_arc it2 = adj[u].begin(); it2 != adj[u].end(); ++it2){
 			unsigned int v = (*it2).first;
-			unsigned int temp = dp[u].first + m_lst_adj[u][v].first;
+			unsigned int temp = dp[u].first + adj[u][v].first;
 			if(temp < dp[v].first)
 				return NULL;
 		}
@@ -203,24 +204,79 @@ int Reseau::bellmanFord(unsigned int numOrig, unsigned int numDest, std::vector<
 }
 
 bool Reseau::estFortementConnexe() const{
-	Reseau inv;
-
-	for(cst_it_sommet_adj it = m_lst_adj.begin(); it != m_lst_adj.end(); ++it){
-		unsigned int u = (*it).first;
-		if(!inv.sommetExiste(u))
-			inv.ajouterSommet(u);
-		for(cst_it_arcs it2 = m_lst_adj.at(u).begin(); it2 != m_lst_adj.at(u).end(); ++it2){
-			unsigned int v = (*it2).first;
-			unsigned int uv = m_lst_adj.at(u).at(v).first;
-			if(!inv.sommetExiste(v))
-				inv.ajouterSommet(v);
-			if(!inv.arcExiste(u,v))
-				inv.ajouterArc(u,v,uv);
-		}
-	}
-
+	std::vector<std::vector<unsigned int> > tmp;
+	return (getComposantesFortementConnexes(tmp) == 1);
 }
 
 int Reseau::getComposantesFortementConnexes(std::vector<std::vector<unsigned int> > & composantes) const{
+	std::stack<unsigned int> pile;
 
+	unordered_map<unsigned int, bool> visite;
+	Reseau inv = inverse();
+
+	for(cst_it_sommet it = adj.begin(); it != adj.end(); ++it){
+		visite[(*it).first] = false;
+	}
+	for(cst_it_sommet it = adj.begin(); it != adj.end(); ++it){
+		unsigned int i = (*it).first;
+		if(!visite.at(i))
+			inv.ordreEmpilage(i,visite,pile);
+	}
+
+	for(cst_it_sommet it = adj.begin(); it != adj.end(); ++it){
+		visite[(*it).first] = false;
+	}
+	while(!pile.empty()){
+		unsigned int v = pile.top();
+		pile.pop();
+
+		if(!visite[v]){
+			std::vector<unsigned int> res;
+			explore(v,visite,res);
+			if(!res.empty())
+				composantes.push_back(res);
+		}
+	}
+	return composantes.size();
 }
+
+
+Reseau Reseau::inverse() const{
+	Reseau inv;
+
+	for(cst_it_sommet it = adj.begin(); it != adj.end(); ++it){
+		unsigned int u = (*it).first;
+		if(!inv.sommetExiste(u))
+			inv.ajouterSommet(u);
+		for(cst_it_arc it2 = adj.at(u).begin(); it2 != adj.at(u).end(); ++it2){
+			unsigned int v = (*it2).first;
+			unsigned int uv = adj.at(u).at(v).first;
+			if(!inv.sommetExiste(v))
+				inv.ajouterSommet(v);
+			if(!inv.arcExiste(u,v))
+				inv.ajouterArc(v,u,uv);
+		}
+	}
+	return inv;
+}
+
+void Reseau::ordreEmpilage(unsigned int s, unordered_map<unsigned int, bool> &visite, stack<unsigned int> &pile) const{
+	visite[s] = true;
+	for(cst_it_arc it = adj.at(s).begin(); it != adj.at(s).end(); ++it){
+			unsigned int v = (*it).first;
+			if(!visite[v])
+				ordreEmpilage(v,visite,pile);
+		}
+	pile.push(s);
+}
+
+void Reseau::explore(unsigned int s, unordered_map<unsigned int, bool> &visite, std::vector<unsigned int> &res) const{
+	visite[s] = true;
+	res.push_back(s);
+	for(cst_it_arc it = adj.at(s).begin(); it != adj.at(s).end(); ++it){
+		unsigned int v = (*it).first;
+		if(!visite[v])
+			explore(v,visite,res);
+	}
+}
+
