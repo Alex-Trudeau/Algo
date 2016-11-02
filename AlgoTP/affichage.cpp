@@ -37,8 +37,11 @@ void afficherVoyagesProchaineHeure(std::ofstream & p_fichier, std::vector<Voyage
 		std::map<std::string,std::vector<Date>> & p_dates){
 
 	// Definition des variables de la date et heure actuelle
-	Date currentDate = Date();
-	Heure now = Heure();
+	Date currentDate = Date(2016,9,6);
+	Heure now = Heure(22,47,52);
+
+	/*Date currentDate = Date();
+	Heure now = Heure();*/
 
 	// Definition d'une variable pour l'heure future dans une heure
 	Heure inOneHour = now.add_secondes(3600);
@@ -69,7 +72,8 @@ void afficherVoyagesProchaineHeure(std::ofstream & p_fichier, std::vector<Voyage
 	for(unsigned int vt = 0; vt < voyages2d.size(); vt++){
 		p_fichier << (*voyages2d[vt]) << endl;				// Ecrire le voyage
 		for (unsigned int a = 0; a < voyages2d[vt]->getArrets().size(); a++){
-			p_fichier << voyages2d[vt]->getArrets()[a] << endl;	// Ecrire les arrets du voyage
+			Arret ar = voyages2d[vt]->getArrets()[a]; // Affiche juste l'heure
+			p_fichier << ar << " - " << ar.getStationId() << endl;	// Ecrire les arrets du voyage
 		}
 	}
 }

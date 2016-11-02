@@ -7,10 +7,13 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <unordered_map>
 #include "station.h"
 #include "voyage.h"
+#include "ligne.h"
 #include "auxiliaires.h"
-#include "oldreseau.h"
+#include "reseau.h"
 
 const double vitesse_de_marche = 5.0; /*! vitesse moyenne de marche d'un humain selon wikipedia */
 
@@ -62,12 +65,23 @@ public:
 
 
 private:
+	std::string m_repertoireGTFS;
+	std::unordered_map<std::string, Ligne> m_lignes;
+	std::unordered_map<unsigned int, std::string> m_idNoLigne;
+	std::unordered_map<unsigned int, Station> m_stations;
+	std::unordered_map<std::string, Voyage> m_voyages;
+	std::unordered_map<Date, std::vector<Voyage*>> m_voyages_dates;
 	Reseau m_reseau;
 
 	void initialiser_reseau(Date date, Heure heure_depart, Heure heure_fin, Coordonnees depart, Coordonnees dest,
 			double dist_de_marche=distance_max_initiale, double dist_transfert=distance_max_transfert);
 
-	/** À compléter */
+	void importerLignes();
+	void importerStations();
+	void importerVoyages();
+	void importerArrets();
+	void importerDatesVoyages();
+	void importerTout();
 
 
 
