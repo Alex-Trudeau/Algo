@@ -50,6 +50,8 @@ public:
 
 	Station getStation(int station_id);
 
+	std::vector<Voyage*> trouver_voyages(int station_id, std::string num_ligne);
+
 	std::pair<std::string, std::string> get_bus_destinations(int station_id, std::string num_ligne);
 
 	std::vector<std::pair<double, Station*>> trouver_stations_environnantes(Coordonnees coord, double rayon);
@@ -70,7 +72,7 @@ private:
 	std::unordered_map<unsigned int, std::string> m_idNoLigne;
 	std::unordered_map<unsigned int, Station> m_stations;
 	std::unordered_map<std::string, Voyage> m_voyages;
-	std::unordered_map<Date, std::vector<Voyage*>> m_voyages_dates;
+	std::unordered_map<Date, std::unordered_map<std::string, Voyage*>> m_voyages_dates;
 	Reseau m_reseau;
 
 	void initialiser_reseau(Date date, Heure heure_depart, Heure heure_fin, Coordonnees depart, Coordonnees dest,
@@ -82,8 +84,6 @@ private:
 	void importerArrets();
 	void importerDatesVoyages();
 	void importerTout();
-
-
 
 };
 
