@@ -72,7 +72,8 @@ private:
 	std::unordered_map<unsigned int, std::string> m_idNoLigne;
 	std::unordered_map<unsigned int, Station> m_stations;
 	std::unordered_map<std::string, Voyage> m_voyages;
-	std::unordered_map<Date, std::unordered_map<std::string, Voyage*>> m_voyages_dates;
+	std::unordered_map<Date, std::unordered_map<std::string, std::vector<Voyage*>>> m_voyages_date;
+	std::unordered_map<unsigned int, Arret*> m_arrets;
 	Reseau m_reseau;
 
 	void initialiser_reseau(Date date, Heure heure_depart, Heure heure_fin, Coordonnees depart, Coordonnees dest,

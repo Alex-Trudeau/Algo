@@ -179,14 +179,7 @@ void itineraire(Gestionnaire & g, vector<addresse> carnet){
 	min = entreeDonneeDefaut(hDef.getMin(),"minutes");
 	sec = entreeDonneeDefaut(hDef.getSec(),"secondes");
 
-	cout << "Initialisation du réseau ...." << endl;
-
-	cout << "Recherche du plus court chemin" << endl;
-	/* ------------------------------------------------------------------------------- */
-
-
-
-
+	vector<unsigned int> chemin = g.plus_court_chemin(Date(a,m,j),Heure(hr,min,sec),dep,arr);
 }
 
 int main() {
@@ -206,8 +199,14 @@ int main() {
 	Gestionnaire g = Gestionnaire(chemin);
 	cout << tempsTraitement(start) << endl;
 
+	/*Coordonnees dep = carnet[5].coord;
+	Coordonnees arr = carnet[0].coord;
+	vector<unsigned int> ch = g.plus_court_chemin(Date(2016,10,5),Heure(20,0,0),dep,arr);
+	for(auto it = ch.begin(); it != ch.end(); ++it){
+		cout << (*it) << " - " << g.getStation((*it)).getDescription() << endl;
+	}*/
 	// Boucle sur le menu tant que le choix est entre 1,2,3 ou 4
-	bool fin = false;
+	/*bool fin = false;
 	while(!fin){
 		int choix = menu();
 		switch (choix){
@@ -227,7 +226,7 @@ int main() {
 			cout << "Au revoir!" << endl;
 			break;
 		}
-	}
+	}*/
 
 
 	/*Reseau rs = Reseau();
