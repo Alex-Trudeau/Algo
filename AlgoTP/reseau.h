@@ -21,6 +21,7 @@
  *
  */
 
+typedef std::pair<unsigned int, unsigned int> pii;
 typedef std::unordered_map<unsigned int, std::pair<unsigned int, unsigned int> > liste_arcs;
 typedef std::unordered_map<unsigned int, liste_arcs> liste_adjacence;
 
@@ -28,6 +29,7 @@ typedef liste_adjacence::iterator it_sommet;
 typedef liste_adjacence::const_iterator cst_it_sommet;
 typedef liste_arcs::iterator it_arc;
 typedef liste_arcs::const_iterator cst_it_arc;
+
 
 /*!
  * \class Reseau

@@ -60,12 +60,21 @@ std::pair<std::string, std::string> Gestionnaire::get_bus_destinations(
 		throw logic_error("Cette ligne n'existe pas");
 	if(!station_existe(station_id))
 		throw logic_error("Cette station n'existe pas");
-	vector<Ligne*> v = getStation(station_id).getLignesPassantes();
+	string d1 = "";
+	string d2 = "";
+	vector<Voyage*> v = getStation(station_id).getVoyagesPassants();
+
 	for(auto it = v.begin();it != v.end();++it){
-		if((*it)->getNumero() == num_ligne)
-			return (*it)->getDestinations();
+		if((*it)->getLigne()->getNumero() == num_ligne){
+			if(d1 == "")
+				d1 = (*it)->getDestination();
+			else if (d1 != (*it)->getDestination()){
+				d2 = (*it)->getDestination();
+				return {d1,d2};
+			}
+		}
 	}
-	return {};
+	return {d1,d2};
 }
 
 std::vector<std::pair<double, Station*> > Gestionnaire::trouver_stations_environnantes(
@@ -84,7 +93,7 @@ std::vector<Heure> Gestionnaire::trouver_horaire(Date date, Heure heure,
 		std::string num_ligne, int station_id, std::string destination) {
 	std::vector<Heure> retour;
 	std::vector<Voyage*> vDeLigStat = trouver_voyages(station_id, num_ligne);
-	std::unordered_map<std::string, vector<Voyage*>> voyDate = m_voyages_date[date];
+	std::unordered_map<std::string, Voyage*> voyDate = m_voyages_date[date];
 	for(auto it = vDeLigStat.begin(); it != vDeLigStat.end(); ++it){
 		string idVoy = (*it)->getId();
 		if(voyDate.count(idVoy)){ 						// && (*it)->getDestination() == destination
@@ -102,7 +111,26 @@ std::vector<Heure> Gestionnaire::trouver_horaire(Date date, Heure heure,
 
 bool Gestionnaire::reseau_est_fortement_connexe(Date date, Heure heure_debut,
 		bool considerer_transfert) {
-
+	Heure heure_fin = heure_debut.add_secondes(interval_planification_en_secondes);
+	Coordonnees fake = Coordonnees(46,-71);
+	if(considerer_transfert){
+		initialiser_reseau(date,heure_debut,heure_fin,fake,fake,0.0,distance_max_transfert);
+		int estCon = m_reseau.estFortementConnexe();
+		if(estCon)
+			cout << "Avec les arêtes de transfert, le réseau est fortement connexe." << endl;
+		else
+			cout << "Avec les arêtes de transfert, le réseau n'est pas fortement connexe." << endl;
+		return estCon;
+	}
+	else{
+		initialiser_reseau(date,heure_debut,heure_fin,fake,fake,0.0,0.0);
+		int estCon = m_reseau.estFortementConnexe();
+		if(estCon)
+			cout << "Sans les arêtes de transfert, le réseau est fortement connexe." << endl;
+		else
+			cout << "Sans les arêtes de transfert, le réseau n'est pas fortement connexe." << endl;
+		return estCon;
+	}
 }
 
 void Gestionnaire::composantes_fortement_connexes(Date date, Heure heure_debut,
@@ -114,66 +142,99 @@ void Gestionnaire::composantes_fortement_connexes(Date date, Heure heure_debut,
 std::vector<unsigned int> Gestionnaire::plus_court_chemin(Date date,
 		Heure heure_depart, Coordonnees depart, Coordonnees destination) {
 	Heure heure_fin = heure_depart.add_secondes(interval_planification_en_secondes);
+	cout << "Initialisation du réseau ...." << endl;
 	initialiser_reseau(date,heure_depart,heure_fin,depart,destination,distance_max_initiale,distance_max_transfert);
 	cout << "Recherche du plus court chemin" << endl;
 	vector<unsigned int> chemin;
+	//m_reseau.dijkstra(num_depart,num_dest,chemin);
 	m_reseau.bellmanFord(num_depart,num_dest,chemin);
+	/*for(int i = 0; i < chemin.size(); i++){
+		if(chemin[i] == 1)
+			cout << chemin[i] << " - " << endl;
+		else{
+			int u = chemin[i];
+			int v = chemin[i+1];
+			int t = m_reseau.getTypeArc(u,v);
+			string typ;
+			if(t==0)
+				typ = "BUS";
+			else
+				typ = "Pied";
+			cout << u << " - " << v << " (" << typ << ")" << endl;
+		}
+	}*/
 	return chemin;
 }
 
 void Gestionnaire::initialiser_reseau(Date date, Heure heure_depart,
 		Heure heure_fin, Coordonnees depart, Coordonnees dest,
 		double dist_de_marche, double dist_transfert) {
-	cout << "Initialisation du réseau ...." << endl;
 	m_reseau = Reseau();
 	m_arrets.clear();
-	std::unordered_map<std::string, vector<Voyage*>> voyDate = m_voyages_date[date];
-	m_reseau.ajouterSommet(num_depart);
-	m_reseau.ajouterSommet(num_dest);
+	std::unordered_map<std::string, Voyage*> voyDate = m_voyages_date[date];
+	std::vector<unsigned int> stations;
 
-	std::vector<std::pair<double, Station*>>env0 = trouver_stations_environnantes(depart,dist_de_marche);
-	for(auto e0 = env0.begin(); e0 != env0.end(); ++e0){
-		unsigned int v = (*e0).second->getId();
-		unsigned int c = (*e0).first*3600/vitesse_de_marche;
-		if(m_reseau.arcExiste(0,v)){
-			if(m_reseau.getCoutArc(0,v) > c){
-				if(m_reseau.getTypeArc(0,v) == 1)
-					m_reseau.majCoutArc(0,v,c);
+	// Ajout des 2 sommets fictifs
+	if(dist_de_marche != 0.0){
+		m_reseau.ajouterSommet(num_depart);
+		m_reseau.ajouterSommet(num_dest);
+
+		// Ajout des arcs de départ aux stations environnantes
+		std::vector<std::pair<double, Station*>> stEnv0 = trouver_stations_environnantes(depart, dist_de_marche);
+		for(auto s = stEnv0.begin(); s != stEnv0.end(); ++s){
+			unsigned int u = num_depart;
+			unsigned int v = (*s).second->getId();
+			if(!m_reseau.sommetExiste(v)){
+				m_reseau.ajouterSommet(v);
+				stations.push_back(v);
 			}
+			unsigned int c = (*s).first*3600/vitesse_de_marche;
+			//unsigned int c = (*s).first*1000;
+			m_reseau.ajouterArc(u,v,c,1);
 		}
-		else
-			m_reseau.ajouterArc(0,v,c,1);
-	}
 
-	std::vector<std::pair<double, Station*>>env1 = trouver_stations_environnantes(dest,dist_de_marche);
-	for(auto e1 = env1.begin(); e1 != env1.end(); ++e1){
-		unsigned int v = (*e1).second->getId();
-		unsigned int c = (*e1).first*3600/vitesse_de_marche;
-		if(m_reseau.arcExiste(v,1)){
-			if(m_reseau.getCoutArc(v,1) > c){
-				if(m_reseau.getTypeArc(v,1) == 1)
-					m_reseau.majCoutArc(v,1,c);
+
+		// Ajout des arcs de l'arrivée aux stations environnantes
+		std::vector<std::pair<double, Station*>> stEnv1 = trouver_stations_environnantes(dest, dist_de_marche);
+		for(auto s = stEnv1.begin(); s != stEnv1.end(); ++s){
+			unsigned int v = num_dest;
+			unsigned int u = (*s).second->getId();
+			if(!m_reseau.sommetExiste(u)){
+				m_reseau.ajouterSommet(u);
+				stations.push_back(u);
 			}
+			unsigned int c = (*s).first*3600/vitesse_de_marche;
+			//unsigned int c = (*s).first*1000;
+			m_reseau.ajouterArc(u,v,c,1);
 		}
-		else
-		m_reseau.ajouterArc(v,1,c,1);
-	}
+	} // Fin if dist_marche != 0
 
-	/*m_reseau.ajouterSommet(num_depart);
-	m_reseau.ajouterSommet(num_dest);
-	for(auto s = m_stations.begin(); s != m_stations.end(); ++s){
-		m_reseau.ajouterSommet((*s).first);
-	}
-	cout << voyDate.size() << endl;
-	for(auto v = voyDate.begin(); v != voyDate.end(); ++v){
-		vector<Arret> va = (*v).second->getArrets();
-		for(auto a = va.begin(); a != va.end()-1; ++a){
-			if((*a).getHeureArrivee() < heure_fin){
-				unsigned int u = (*a).getStationId();
-				unsigned int v = (*(a+1)).getStationId();
-				unsigned int c = (*a).getHeureArrivee()-(*a).getHeureDepart();
+	// Ajout des arcs des voyages de la journée concernée
+	for(auto id = voyDate.begin(); id != voyDate.end(); ++id){
+		string idV = (*id).first;
+		Voyage v = m_voyages.at(idV);
+		vector<Arret> va = v.getArrets();
+		for(unsigned int a = 0; a != va.size()-1; a++){
+			if(va[a].getHeureDepart() > heure_depart && va[a].getHeureDepart() < heure_fin){
+				unsigned int u = va[a].getStationId();
+				unsigned int v = va[a+1].getStationId();
+				unsigned int c;
+				if(!m_reseau.sommetExiste(u)){
+					m_reseau.ajouterSommet(u);
+					stations.push_back(u);
+				}
+				if(!m_reseau.sommetExiste(v)){
+					m_reseau.ajouterSommet(v);
+					stations.push_back(v);
+				}
+				if(va[a+1].getHeureDepart()-va[a].getHeureDepart() <= 0)
+					c = 30;
+				else
+					c = va[a+1].getHeureDepart()-va[a].getHeureDepart();
+
+				//c = (m_stations.at(v).getCoords()-m_stations.at(u).getCoords())*1000;
 				if(m_reseau.arcExiste(u,v)){
-					if(m_reseau.getCoutArc(u,v) > c)
+					if(m_reseau.getCoutArc(u,v) > (int)c)
 						m_reseau.majCoutArc(u,v,c);
 				}
 				else
@@ -182,32 +243,27 @@ void Gestionnaire::initialiser_reseau(Date date, Heure heure_depart,
 		}
 	}
 
-
-	for(auto s = m_stations.begin(); s != m_stations.end(); ++s){
-		std::vector<std::pair<double, Station*>> se = trouver_stations_environnantes((*s).second.getCoords(),dist_transfert);
-		for(auto e = se.begin(); e != se.end(); ++e){
-			unsigned int u = (*s).first;
-			unsigned int v = (*e).second->getId();
-			unsigned int c = (*e).first*3600/vitesse_de_marche;
-			if(m_reseau.arcExiste(u,v)){
-				if(m_reseau.getCoutArc(u,v) > c){
-					if(m_reseau.getTypeArc(u,v) == 1)
+	if(dist_transfert != 0.0)
+	{
+		// Ajout des arcs de transfert entre stations
+		for(auto s = stations.begin(); s != stations.end(); ++s){
+			std::vector<std::pair<double, Station*>> se = trouver_stations_environnantes(m_stations.at(*s).getCoords(),dist_transfert);
+			for(auto e = se.begin(); e != se.end(); ++e){
+				unsigned int u = (*s);
+				unsigned int v = (*e).second->getId();
+				unsigned int c = (*e).first*3600/vitesse_de_marche;
+				//unsigned int c = (*e).first*1000;
+				if(!m_reseau.sommetExiste(v))
+					continue;
+				if(m_reseau.arcExiste(u,v)){
+					if(m_reseau.getCoutArc(u,v) > (int)c && m_reseau.getTypeArc(u,v) == 1)
 						m_reseau.majCoutArc(u,v,c);
 				}
+				else
+					m_reseau.ajouterArc(u,v,c,1);
 			}
-			else
-				m_reseau.ajouterArc(u,v,c,1);
-
-			if(m_reseau.arcExiste(v,u)){
-				if(m_reseau.getCoutArc(v,u) > c){
-					if(m_reseau.getTypeArc(v,u) == 1)
-						m_reseau.majCoutArc(v,u,c);
-				}
-			}
-			else
-				m_reseau.ajouterArc(v,u,c,1);
 		}
-	}*/
+	}
 }
 
 void Gestionnaire::importerLignes(){
@@ -272,17 +328,20 @@ void Gestionnaire::importerDatesVoyages(){
 	string fichier = m_repertoireGTFS + "calendar_dates.txt";
 	vector<vector<string>> objs;
 	lireFichier(fichier, objs, ',', true);
-	unordered_map<string,vector<Voyage*>> vServiceId;
+	unordered_map<string,vector<string>> vServiceId;
 	for(auto it = m_voyages.begin(); it != m_voyages.end(); ++it){
 		Voyage v = (*it).second;
-		vServiceId[v.getServiceId()].push_back(&v);
+		vServiceId[v.getServiceId()].push_back(v.getId());
 	}
 	for (unsigned int i = 0; i < objs.size(); i++) {
 		unsigned int y = stoi(objs[i][1].substr(0,4));
 		unsigned int m = stoi(objs[i][1].substr(4,2));
 		unsigned int d = stoi(objs[i][1].substr(6,2));
 		string id = objs[i][0];
-		m_voyages_date[Date(y,m,d)].insert({id,vServiceId[id]});
+		for(auto v = vServiceId[id].begin();v != vServiceId[id].end();++v){
+			m_voyages_date[Date(y,m,d)].insert({(*v),&m_voyages.at(*v)});
+		}
+		//m_voyages_date[Date(y,m,d)].insert({id,vServiceId[id]});
 	}
 	/*unordered_map<string,vector<Date>> dateService;
 	for (unsigned int i = 0; i < objs.size(); i++) {

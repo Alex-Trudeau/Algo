@@ -66,7 +66,7 @@ void stationsProximite(Gestionnaire & g){
 	}
 	else{
 		for(auto s = stations.begin(); s != stations.end(); ++s){
-			cout << "À une distance de " << (*s).first << "km" << endl;
+			cout << "À une distance de " << (*s).first << "km:" << endl;
 			cout << (*s).second->getId() << " - " << (*s).second->getDescription() << endl;
 		}
 	}
@@ -110,7 +110,21 @@ void horaireBus(Gestionnaire & g){
 	entreeDonnee("Entrez le numéro de station", noStation);
 	Ligne l = g.getLigne(noBus);
 	Station s = g.getStation(noStation);
-	vector<Heure> hrs = g.trouver_horaire(Date(a,m,j),Heure(hr,min,sec),noBus,noStation,"");
+	std::pair<std::string, std::string> dests = g.get_bus_destinations(noStation, noBus);
+	vector<Heure> hrs;
+	if (dests.second == "")
+		hrs = g.trouver_horaire(Date(a,m,j),Heure(hr,min,sec),noBus,noStation,dests.first);
+	else{
+		cout << "Choisir une destination" << endl;
+		cout << "1 - " << dests.first << endl;
+		cout << "2 - " << dests.second << endl;
+		int choix;
+		entreeDonnee("Entrez le numéro correspondant:",choix);
+		if(choix == 1)
+			hrs = g.trouver_horaire(Date(a,m,j),Heure(hr,min,sec),noBus,noStation,dests.first);
+		else
+			hrs = g.trouver_horaire(Date(a,m,j),Heure(hr,min,sec),noBus,noStation,dests.second);
+	}
 	cout << Date(a,m,j) << Heure(hr,min,sec) << noBus << noStation << endl;
 	cout << l;
 	cout << s.getId() << " - " << s.getDescription() << "\n" <<  endl;
@@ -118,6 +132,7 @@ void horaireBus(Gestionnaire & g){
 		cout << (*it) << endl;
 	}
 }
+
 void printCarnetAdd(vector<addresse> carnet){
 	cout << "Carnet d'adresse" << endl;
 	int compteur = 1;
@@ -126,6 +141,7 @@ void printCarnetAdd(vector<addresse> carnet){
 	}
 	cout << "sélectionner une addresse en indiquant son numéro: ";
 }
+
 void itineraire(Gestionnaire & g, vector<addresse> carnet){
 	int d,ar;
 	string cD,cA;
@@ -182,6 +198,25 @@ void itineraire(Gestionnaire & g, vector<addresse> carnet){
 	vector<unsigned int> chemin = g.plus_court_chemin(Date(a,m,j),Heure(hr,min,sec),dep,arr);
 }
 
+void reseauFortementConnexe(Gestionnaire & g){
+	unsigned int a,m,j,hr,min,sec;
+	Date dDef = Date();
+	Heure hDef = Heure();
+
+	cout << "Entrez la date désirée" << endl;
+	cin.ignore();
+	a = entreeDonneeDefaut(dDef.getAn(),"annee");
+	m = entreeDonneeDefaut(dDef.getMois(),"mois");
+	j = entreeDonneeDefaut(dDef.getJour(),"jour");
+	cout << "Entrez l'heure de début désirée" << endl;
+	hr = entreeDonneeDefaut(hDef.getHeure(),"heure");
+	min = entreeDonneeDefaut(hDef.getMin(),"minutes");
+	sec = entreeDonneeDefaut(hDef.getSec(),"secondes");
+
+	g.reseau_est_fortement_connexe(Date(a,m,j),Heure(hr,min,sec),true);
+	g.reseau_est_fortement_connexe(Date(a,m,j),Heure(hr,min,sec),false);
+}
+
 int main() {
 	Heure start = Heure();
 	string chemin = "/home/xub-msi/Test/";
@@ -199,14 +234,8 @@ int main() {
 	Gestionnaire g = Gestionnaire(chemin);
 	cout << tempsTraitement(start) << endl;
 
-	/*Coordonnees dep = carnet[5].coord;
-	Coordonnees arr = carnet[0].coord;
-	vector<unsigned int> ch = g.plus_court_chemin(Date(2016,10,5),Heure(20,0,0),dep,arr);
-	for(auto it = ch.begin(); it != ch.end(); ++it){
-		cout << (*it) << " - " << g.getStation((*it)).getDescription() << endl;
-	}*/
 	// Boucle sur le menu tant que le choix est entre 1,2,3 ou 4
-	/*bool fin = false;
+	bool fin = false;
 	while(!fin){
 		int choix = menu();
 		switch (choix){
@@ -220,70 +249,67 @@ int main() {
 			itineraire(g,carnet);
 			break;
 		case 4:
+			reseauFortementConnexe(g);
 			break;
 		default:
 			fin = true;
 			cout << "Au revoir!" << endl;
 			break;
 		}
+	}
+
+	// Test option 1
+	/*Coordonnees test = Coordonnees(46.778808,-71.270014);
+	std::vector<std::pair<double, Station*>> stations = g.trouver_stations_environnantes(test,0.5);
+	if(stations.size() == 0){
+		cout << "Aucune station dans le rayon spécifié" << endl;
+	}
+	else{
+		for(auto s = stations.begin(); s != stations.end(); ++s){
+			cout << "À une distance de " << (*s).first << "km:" << endl;
+			cout << (*s).second->getId() << " - " << (*s).second->getDescription() << endl;
+		}
 	}*/
 
+	// Test option 2
+	/*Ligne l = g.getLigne("800");
+	Station s = g.getStation(1515);
 
-	/*Reseau rs = Reseau();
-	rs.ajouterSommet(1);
-	rs.ajouterSommet(2);
-	rs.ajouterSommet(3);
-	rs.ajouterSommet(4);
-	rs.ajouterSommet(5);
-	rs.ajouterSommet(6);
-	rs.ajouterSommet(7);
-	rs.ajouterSommet(8);
-	rs.ajouterSommet(9);
-	rs.ajouterSommet(10);
-	rs.ajouterSommet(11);
-	rs.ajouterSommet(12);
-
-	rs.ajouterArc(1,2,1);
-	rs.ajouterArc(2,3,1);
-	rs.ajouterArc(2,4,1);
-	rs.ajouterArc(2,5,1);
-	rs.ajouterArc(3,6,1);
-	rs.ajouterArc(5,2,1);
-	rs.ajouterArc(5,6,1);
-	rs.ajouterArc(6,3,1);
-	rs.ajouterArc(5,7,1);
-	rs.ajouterArc(6,8,1);
-	rs.ajouterArc(7,8,1);
-	rs.ajouterArc(7,10,1);
-	rs.ajouterArc(8,11,1);
-	rs.ajouterArc(9,7,1);
-	rs.ajouterArc(10,9,1);
-	rs.ajouterArc(11,12,1);
-	rs.ajouterArc(12,10,1);
-
-	cout << rs.nombreSommets() << " && " << rs.nombreArcs() << endl;
-	vector<vector<unsigned int>> v_ret;
-	int nbCompos = rs.getComposantesFortementConnexes(v_ret);
-	cout << nbCompos << endl;
-	for(int i = 0; i < nbCompos; i++){
-		cout << i << " : {" ;
-		for(unsigned int j =0; j < v_ret[i].size() ; j++){
-			cout << v_ret[i][j] << ", ";
-		}
-		cout << endl;
+	cout << l;
+	std::pair<std::string, std::string> dests = g.get_bus_destinations(1515, "800");
+	vector<Heure> hrs;
+	if (dests.second == "")
+		hrs = g.trouver_horaire(Date(2016,10,5),Heure(20,0,0),"800",1515,dests.first);
+	else{
+		cout << "Choisir une destination" << endl;
+		cout << "1 - " << dests.first << endl;
+		cout << "2 - " << dests.second << endl;
+		int choix;
+		entreeDonnee("Entrez le numéro correspondant:",choix);
+		if(choix == 1)
+			hrs = g.trouver_horaire(Date(2016,10,5),Heure(20,0,0),"800",1515,dests.first);
+		else
+			hrs = g.trouver_horaire(Date(2016,10,5),Heure(20,0,0),"800",1515,dests.second);
 	}
-	*/
-	/*vector<unsigned int> retour;
+	cout << s.getId() << " - " << s.getDescription() << "\n" <<  endl;
+	for(auto it = hrs.begin(); it != hrs.end(); ++it){
+		cout << (*it) << endl;
+	}*/
 
-	int valeur = rs.bellmanFord(1,12,retour);
+	// Test option 3
+	/*Coordonnees dep = carnet[5].coord;
+	Coordonnees arr = carnet[0].coord;
+	vector<unsigned int> ch = g.plus_court_chemin(Date(2016,10,5),Heure(20,0,0),dep,arr);
+	for(auto it = ch.begin(); it != ch.end(); ++it){
+		if((*it) == 0 || (*it) == 1)
+			cout << (*it) << " - " << endl;
+		else
+			cout << (*it) << " - " << g.getStation((*it)).getDescription() << endl;
+	}*/
 
-	cout << "Le chemin le plus court est :" <<endl;
+	// Test option 4
+	/*	g.reseau_est_fortement_connexe(Date(2016,10,5),Heure(8,0,0),true);
+	g.reseau_est_fortement_connexe(Date(2016,10,5),Heure(8,0,0),false);*/
 
-	for(int i =0; i< retour.size(); ++i){
-		cout << retour[i];
-	}
-
-	cout << endl;
-	cout << "et de valeur :" << valeur << endl;*/
 	return 0;
 }

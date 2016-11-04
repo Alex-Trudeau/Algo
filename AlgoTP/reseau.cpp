@@ -106,46 +106,55 @@ int Reseau::dijkstra(unsigned int numOrig, unsigned int numDest, std::vector<uns
 			throw (std::logic_error){
 	if(!chemin.empty())
 		throw logic_error("Le chemin fourni n'est pas vide");
+	if(!sommetExiste(numOrig) || !sommetExiste(numDest))
+		throw logic_error("Un ou les 2 points sont invalide");
 
-	typedef pair<unsigned int, bool> poidsVisite;
-
-	unordered_map<unsigned int, poidsVisite> visite;
+	unordered_map<unsigned int, unsigned int> d;
+	unordered_map<unsigned int, unsigned int> p;
+	unordered_map<unsigned int, bool> vis;
+	priority_queue<pii, vector<pii>, greater<pii>> q;
+	bool destAtteint = false;
 
 	for(it_sommet it = adj.begin(); it != adj.end(); ++it){
-		visite[(*it).first] = {INFINI,false};
+		d[(*it).first] = INFINI;
+		p[(*it).first] = NULL;
+		vis[(*it).first] = false;
 	}
 
-	visite[numOrig].first = 0;
+	d[numOrig] = 0;
+	q.push(pii(0,numOrig));
 
-	for(it_sommet it = adj.begin(); it != adj.end(); ++it){
-		unsigned int u = NULL;
-		unsigned int du = INFINI;
-
-		for(unordered_map<unsigned int, poidsVisite>::iterator it2 = visite.begin(); it2 != visite.end(); ++it2){
-			if((*it2).second.second == false && (*it2).second.first < du)
-			{
-				u = (*it2).first;
-				du = (*it2).second.first;
+	while(!q.empty() && !destAtteint){
+		// En utilisant la notation u -> v pour les arcs
+		unsigned int u = q.top().second;
+		vis[u] = true;
+		q.pop();
+		if(u == numDest){
+			destAtteint = true;
+			continue;
+		}
+		for(auto it = adj[u].begin(); it != adj[u].end(); ++it){
+			unsigned int v = (*it).first;
+			unsigned int w = (*it).second.first;
+			unsigned int temp = d[u] + w;
+			if(temp < d[v] && !vis[v]){
+				d[v] = temp;
+				p[v] = u;
+				q.push(pii(d[v],v));
 			}
 		}
-		if(u == NULL)
-			throw logic_error("Ne peut trouver de chemin");
-
-		visite[u].second = true;
-		chemin.push_back(u);
-
-		if(u == numDest)
-			return visite[u].first;
-
-		for(it_arc it3 = adj[u].begin(); it3 != adj[u].end(); ++it3){
-			unsigned int temp = visite[u].first + (*it3).second.first;
-			if(temp < visite[(*it3).first].first)
-				visite[(*it3).first].first = temp;
-		}
 	}
-	if(visite[numDest].first != INFINI)
-		return visite[numDest].first;
-	return NULL;
+
+	unsigned int cour = numDest;
+	while(cour != numOrig){
+		unsigned int pred = p[cour];
+		chemin.push_back(cour);
+		cour = pred;
+	}
+	chemin.push_back(numOrig);
+	std::reverse(chemin.begin(),chemin.end());
+
+	return p[numDest];
 }
 
 int Reseau::bellmanFord(unsigned int numOrig, unsigned int numDest, std::vector<unsigned int> & chemin)
