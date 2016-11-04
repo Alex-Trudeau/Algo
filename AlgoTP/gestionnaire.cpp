@@ -12,10 +12,6 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) :
 			throw logic_error((*it)+".txt n'existe pas dans le chemin spécifié");
 	}
 	importerTout();
-
-	vector<Voyage*> v = m_stations.at(1515).getVoyagesPassants();
-	cout << v.size() << endl;
-
 }
 
 bool Gestionnaire::date_est_prise_en_charge(const Date& date) {

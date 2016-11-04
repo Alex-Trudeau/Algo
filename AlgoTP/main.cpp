@@ -236,7 +236,7 @@ int main() {
 	cout << tempsTraitement(start) << endl;
 
 	// Boucle sur le menu tant que le choix est entre 1,2,3 ou 4
-	/*bool fin = false;
+	bool fin = false;
 	while(!fin){
 		int choix = menu();
 		switch (choix){
@@ -257,7 +257,7 @@ int main() {
 			cout << "Au revoir!" << endl;
 			break;
 		}
-	}*/
+	}
 
 	// Test option 1
 	/*Coordonnees test = Coordonnees(46.778808,-71.270014);
