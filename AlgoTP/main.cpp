@@ -12,6 +12,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <fstream>
 #include <algorithm>
 #include "reseau.h"
 #include "gestionnaire.h"
@@ -219,7 +220,7 @@ void reseauFortementConnexe(Gestionnaire & g){
 
 int main() {
 	Heure start = Heure();
-	string chemin = "/home/xub-msi/Test/";
+	string chemin = "";
 
 	vector<addresse> carnet;
 	carnet.push_back(addresse({"3475 avenue maricourt, Québec",Coordonnees(46.760074,-71.319867)}));
@@ -235,7 +236,7 @@ int main() {
 	cout << tempsTraitement(start) << endl;
 
 	// Boucle sur le menu tant que le choix est entre 1,2,3 ou 4
-	bool fin = false;
+	/*bool fin = false;
 	while(!fin){
 		int choix = menu();
 		switch (choix){
@@ -256,7 +257,7 @@ int main() {
 			cout << "Au revoir!" << endl;
 			break;
 		}
-	}
+	}*/
 
 	// Test option 1
 	/*Coordonnees test = Coordonnees(46.778808,-71.270014);

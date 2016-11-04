@@ -6,11 +6,16 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) :
 	m_repertoireGTFS(chemin_dossier){
 	vector<string> f_names = {"routes","trips","stop_times","stops","calendar_dates"};
 	for(auto it = f_names.begin(); it != f_names.end(); ++it){
-		ifstream fichier(chemin_dossier+(*it)+".txt");
+		string dir = chemin_dossier+(*it)+".txt";
+		ifstream fichier(dir);
 		if(!fichier.good())
 			throw logic_error((*it)+".txt n'existe pas dans le chemin spécifié");
 	}
 	importerTout();
+
+	vector<Voyage*> v = m_stations.at(1515).getVoyagesPassants();
+	cout << v.size() << endl;
+
 }
 
 bool Gestionnaire::date_est_prise_en_charge(const Date& date) {
@@ -170,7 +175,6 @@ void Gestionnaire::initialiser_reseau(Date date, Heure heure_depart,
 		Heure heure_fin, Coordonnees depart, Coordonnees dest,
 		double dist_de_marche, double dist_transfert) {
 	m_reseau = Reseau();
-	m_arrets.clear();
 	std::unordered_map<std::string, Voyage*> voyDate = m_voyages_date[date];
 	std::vector<unsigned int> stations;
 
