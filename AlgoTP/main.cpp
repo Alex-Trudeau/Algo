@@ -161,7 +161,7 @@ void itineraire(Gestionnaire & g, vector<addresse> carnet){
 		if(!cD.empty()){
 			istringstream stream(cD);
 			stream >> d;
-			if( d < carnet.size() && d > 0)
+			if( d < (int)carnet.size() && d > 0)
 				valide = true;
 		}
 		if(!valide)
@@ -177,7 +177,7 @@ void itineraire(Gestionnaire & g, vector<addresse> carnet){
 		if(!cA.empty()){
 			istringstream stream(cA);
 			stream >> ar;
-			if( ar < carnet.size() && ar > 0)
+			if( ar < (int)carnet.size() && ar > 0)
 				valide = true;
 		}
 		if(!valide)

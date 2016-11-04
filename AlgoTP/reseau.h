@@ -69,6 +69,8 @@ public:
 private:
 	/** À compléter */
 	liste_adjacence adj;
+	int nb_sommets;
+	int nb_arcs;
 
 	Reseau inverse() const;
 	void ordreEmpilage(unsigned int s, std::unordered_map<unsigned int, bool> &visite, std::stack<unsigned int> &pile) const;

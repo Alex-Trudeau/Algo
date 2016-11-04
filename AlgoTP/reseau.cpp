@@ -13,15 +13,19 @@ using namespace std;
 Reseau::Reseau(){}
 
 void Reseau::ajouterSommet(unsigned int numero) throw (std::logic_error){
-	if(!sommetExiste(numero))
+	if(!sommetExiste(numero)){
 		adj[numero] = liste_arcs();
+		nb_sommets++;
+	}
 	else
 		throw std::logic_error("Sommet deja existant");
 }
 
 void Reseau::enleverSommet(unsigned int numero) throw (std::logic_error){
-	if(sommetExiste(numero))
+	if(sommetExiste(numero)){
 		adj.erase(numero);
+		nb_sommets--;
+	}
 	else
 		throw std::logic_error("Sommet inexistant");
 }
@@ -30,8 +34,10 @@ void Reseau::ajouterArc(unsigned int numOrigine, unsigned int numDest, unsigned 
 			throw (std::logic_error){
 	if(sommetExiste(numOrigine)){
 		if(sommetExiste(numDest)){
-			if(!arcExiste(numOrigine,numDest))
+			if(!arcExiste(numOrigine,numDest)){
 				adj[numOrigine][numDest] = {cout,type};
+				nb_arcs++;
+			}
 			else
 				throw std::logic_error("Arc deja existant");
 		}
@@ -43,8 +49,10 @@ void Reseau::ajouterArc(unsigned int numOrigine, unsigned int numDest, unsigned 
 }
 
 void Reseau::enleverArc(unsigned int numOrigine, unsigned int numDest) throw (std::logic_error){
-	if(arcExiste(numOrigine,numDest))
+	if(arcExiste(numOrigine,numDest)){
 		adj[numOrigine].erase(numDest);
+		nb_arcs--;
+	}
 	else
 		throw logic_error("Arc inexistant");
 }
@@ -57,19 +65,15 @@ void Reseau::majCoutArc(unsigned int numOrigine, unsigned int numDest, unsigned 
 }
 
 int Reseau::nombreSommets() const{
-	return adj.size();
+	return nb_sommets;
 }
 
 int Reseau::nombreArcs() const{
-	int total = 0;
-	for(cst_it_sommet it = adj.begin(); it != adj.end(); it++){
-		total +=(*it).second.size();
-	}
-	return total;
+	return nb_arcs;
 }
 
 bool Reseau::estVide() const{
-	return nombreSommets() == 0;
+	return nb_sommets == 0;
 }
 
 bool Reseau::sommetExiste(unsigned int numero) const{
@@ -77,29 +81,25 @@ bool Reseau::sommetExiste(unsigned int numero) const{
 }
 
 bool Reseau::arcExiste(unsigned int numOrigine, unsigned int numDest) const throw (std::logic_error){
-	if(sommetExiste(numOrigine)){
-		if(adj.at(numOrigine).count(numDest) > 0)
-			return true;
-	}
+	if(sommetExiste(numOrigine))
+		throw std::logic_error("Sommet d'origine inexistant");
+	if(sommetExiste(numDest))
+		throw std::logic_error("Sommet de destination inexistant");
+	if(adj.at(numOrigine).count(numDest) != 0)
+		return true;
 	return false;
 }
 
 int Reseau::getCoutArc(unsigned int numOrig, unsigned int numDest) const throw (std::logic_error){
-	int retour;
-	if(arcExiste(numOrig,numDest))
-		retour = adj.at(numOrig).at(numDest).first;
-	else
+	if(!arcExiste(numOrig,numDest))
 		throw logic_error("Arc inexistant");
-	return retour;
+	return adj.at(numOrig).at(numDest).first;
 }
 
 int Reseau::getTypeArc(unsigned int numOrig, unsigned int numDest) const throw (std::logic_error){
-	int retour;
-	if(arcExiste(numOrig,numDest))
-		retour = adj.at(numOrig).at(numDest).second;
-	else
+	if(!arcExiste(numOrig,numDest))
 		throw logic_error("Arc inexistant");
-	return retour;
+	return adj.at(numOrig).at(numDest).second;
 }
 
 int Reseau::dijkstra(unsigned int numOrig, unsigned int numDest, std::vector<unsigned int> & chemin)
@@ -107,28 +107,34 @@ int Reseau::dijkstra(unsigned int numOrig, unsigned int numDest, std::vector<uns
 	if(!chemin.empty())
 		throw logic_error("Le chemin fourni n'est pas vide");
 	if(!sommetExiste(numOrig) || !sommetExiste(numDest))
-		throw logic_error("Un ou les 2 points sont invalide");
+		throw logic_error("Un ou les 2 sommets sont invalide");
 
-	unordered_map<unsigned int, unsigned int> d;
-	unordered_map<unsigned int, unsigned int> p;
-	unordered_map<unsigned int, bool> vis;
-	priority_queue<pii, vector<pii>, greater<pii>> q;
-	bool destAtteint = false;
+	unordered_map<unsigned int, unsigned int> d;	// Map des couts
+	unordered_map<unsigned int, unsigned int> p;	// Map des predecesseurs
+	unordered_map<unsigned int, bool> vis;			// Map de bool de visite
+	priority_queue<pii, vector<pii>, greater<pii>> q;	// File priorité sur le cout
+	bool destAtteint = false;							// Booleen d'arret de la fonction
 
+	// Initialisation des map
+	// Pour tout sommets : Cout = INFINI, predec = NULL et visite = false
 	for(it_sommet it = adj.begin(); it != adj.end(); ++it){
 		d[(*it).first] = INFINI;
 		p[(*it).first] = NULL;
 		vis[(*it).first] = false;
 	}
 
+	// Modification du noeud de départ et ajout a la file
 	d[numOrig] = 0;
 	q.push(pii(0,numOrig));
 
+	// Tant que la file n'est pas vide
 	while(!q.empty() && !destAtteint){
 		// En utilisant la notation u -> v pour les arcs
+		// Prendre l'élément 'u' de la file avec cout minimum
 		unsigned int u = q.top().second;
 		vis[u] = true;
 		q.pop();
+		// Si le noeud selectionné est celui ciblé
 		if(u == numDest){
 			destAtteint = true;
 			continue;

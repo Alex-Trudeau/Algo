@@ -100,7 +100,7 @@ std::vector<Heure> Gestionnaire::trouver_horaire(Date date, Heure heure,
 		if(voyDate.count(idVoy)){ 						// && (*it)->getDestination() == destination
 			vector<Arret> arrets = (*it)->getArrets();
 			for(auto a = arrets.begin(); a != arrets.end(); ++a){
-				if((*a).getHeureArrivee() > heure && (*a).getStationId() == station_id){
+				if((*a).getHeureArrivee() > heure && (int)(*a).getStationId() == station_id){
 					retour.push_back((*a).getHeureArrivee());
 				}
 			}
@@ -307,7 +307,6 @@ void Gestionnaire::importerArrets(){
 
 	for (unsigned int i = 0; i < objs.size(); i++) {
 		string id_voyage = objs[i][0];
-		unsigned int id_station = stoi(objs[i][2]);
 		p_arrets[id_voyage].push_back(Arret(objs[i]));
 	}
 
@@ -341,24 +340,7 @@ void Gestionnaire::importerDatesVoyages(){
 		for(auto v = vServiceId[id].begin();v != vServiceId[id].end();++v){
 			m_voyages_date[Date(y,m,d)].insert({(*v),&m_voyages.at(*v)});
 		}
-		//m_voyages_date[Date(y,m,d)].insert({id,vServiceId[id]});
 	}
-	/*unordered_map<string,vector<Date>> dateService;
-	for (unsigned int i = 0; i < objs.size(); i++) {
-		unsigned int y = stoi(objs[i][1].substr(0,4));
-		unsigned int m = stoi(objs[i][1].substr(4,2));
-		unsigned int d = stoi(objs[i][1].substr(6,2));
-		string id = objs[i][0];
-		dateService[id].push_back(Date(y,m,d));
-	}
-	for (auto it = m_voyages.begin(); it != m_voyages.end(); ++it){
-		string s = (*it).second.getServiceId();
-		Voyage v = (*it).second;
-		vector<Date> d = dateService[s];
-		for(auto dt = d.begin(); dt != d.end(); ++dt){
-			m_voyages_dates[*dt].insert({v.getId(),&v});
-		}
-	}*/
 }
 
 void Gestionnaire::importerTout(){
