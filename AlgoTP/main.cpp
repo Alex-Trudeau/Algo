@@ -239,7 +239,7 @@ int main() {
 
 
 	// Boucle sur le menu tant que le choix est entre 1,2,3 ou 4
-	/*bool fin = false;
+	bool fin = false;
 	while(!fin){
 		int choix = menu();
 		switch (choix){
@@ -260,7 +260,7 @@ int main() {
 			cout << "Au revoir!" << endl;
 			break;
 		}
-	}*/
+	}
 
 	// Test composantes fortements connexes
 	/*	std::vector<std::vector<unsigned int> > result;
@@ -306,7 +306,7 @@ int main() {
 	}*/
 
 	// Test option 3
-	Coordonnees dep = carnet[5].coord;
+	/*Coordonnees dep = carnet[5].coord;
 	Coordonnees arr = carnet[0].coord;
 	vector<unsigned int> ch = g.plus_court_chemin(Date(2016,10,5),Heure(20,0,0),dep,arr);
 	for(auto it = ch.begin(); it != ch.end(); ++it){
@@ -314,7 +314,7 @@ int main() {
 			cout << (*it) << " - " << endl;
 		else
 			cout << (*it) << " - " << g.getStation((*it)).getDescription() << endl;
-	}
+	}*/
 
 	// Test option 4
 	/*	g.reseau_est_fortement_connexe(Date(2016,10,5),Heure(8,0,0),true);
