@@ -10,7 +10,10 @@
 
 using namespace std;
 
-Reseau::Reseau(){}
+Reseau::Reseau(){
+	nb_arcs = 0;
+	nb_sommets = 0;
+}
 
 void Reseau::ajouterSommet(unsigned int numero) throw (std::logic_error){
 	if(!sommetExiste(numero)){
@@ -77,13 +80,13 @@ bool Reseau::estVide() const{
 }
 
 bool Reseau::sommetExiste(unsigned int numero) const{
-	return (adj.count(numero) > 0);
+	return (adj.count(numero) != 0);
 }
 
 bool Reseau::arcExiste(unsigned int numOrigine, unsigned int numDest) const throw (std::logic_error){
-	if(sommetExiste(numOrigine))
+	if(!sommetExiste(numOrigine))
 		throw std::logic_error("Sommet d'origine inexistant");
-	if(sommetExiste(numDest))
+	if(!sommetExiste(numDest))
 		throw std::logic_error("Sommet de destination inexistant");
 	if(adj.at(numOrigine).count(numDest) != 0)
 		return true;

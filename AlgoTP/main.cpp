@@ -24,8 +24,8 @@ struct addresse{
 	Coordonnees coord;
 };
 
-std::string tempsTraitement(Heure p_hrDepart){
-	return ("Chargement des données terminé en " + std::to_string(Heure()-p_hrDepart) + " secondes");
+std::string tempsTraitement(int p_hrDepart){
+	return ("Chargement des données terminé en " + std::to_string((clock()-p_hrDepart)/double(CLOCKS_PER_SEC)) + " secondes");
 }
 
 int menu(){
@@ -177,7 +177,7 @@ void itineraire(Gestionnaire & g, vector<addresse> carnet){
 		if(!cA.empty()){
 			istringstream stream(cA);
 			stream >> ar;
-			if( ar < (int)carnet.size() && ar > 0)
+			if( ar < (int)carnet.size() && ar > 0 && ar != d)
 				valide = true;
 		}
 		if(!valide)
@@ -195,7 +195,8 @@ void itineraire(Gestionnaire & g, vector<addresse> carnet){
 	hr = entreeDonneeDefaut(hDef.getHeure(),"heure");
 	min = entreeDonneeDefaut(hDef.getMin(),"minutes");
 	sec = entreeDonneeDefaut(hDef.getSec(),"secondes");
-
+	if(!g.date_est_prise_en_charge(Date(a,m,j)))
+		throw logic_error("Date non prise en charge par le reseau");
 	vector<unsigned int> chemin = g.plus_court_chemin(Date(a,m,j),Heure(hr,min,sec),dep,arr);
 }
 
@@ -213,13 +214,14 @@ void reseauFortementConnexe(Gestionnaire & g){
 	hr = entreeDonneeDefaut(hDef.getHeure(),"heure");
 	min = entreeDonneeDefaut(hDef.getMin(),"minutes");
 	sec = entreeDonneeDefaut(hDef.getSec(),"secondes");
-
+	if(!g.date_est_prise_en_charge(Date(a,m,j)))
+		throw logic_error("Date non prise en charge par le reseau");
 	g.reseau_est_fortement_connexe(Date(a,m,j),Heure(hr,min,sec),true);
 	g.reseau_est_fortement_connexe(Date(a,m,j),Heure(hr,min,sec),false);
 }
 
 int main() {
-	Heure start = Heure();
+	int start = clock();
 	string chemin = "";
 
 	vector<addresse> carnet;
@@ -234,6 +236,7 @@ int main() {
 
 	Gestionnaire g = Gestionnaire(chemin);
 	cout << tempsTraitement(start) << endl;
+
 
 	// Boucle sur le menu tant que le choix est entre 1,2,3 ou 4
 	bool fin = false;
@@ -258,6 +261,11 @@ int main() {
 			break;
 		}
 	}
+
+	// Test composantes fortements connexes
+	/*	std::vector<std::vector<unsigned int> > result;
+	g.composantes_fortement_connexes(Date(2016,10,5),Heure(20,0,0),result,false);
+	cout << result.size() << " Composantes" << endl;*/
 
 	// Test option 1
 	/*Coordonnees test = Coordonnees(46.778808,-71.270014);
@@ -298,7 +306,7 @@ int main() {
 	}*/
 
 	// Test option 3
-	/*Coordonnees dep = carnet[5].coord;
+	Coordonnees dep = carnet[5].coord;
 	Coordonnees arr = carnet[0].coord;
 	vector<unsigned int> ch = g.plus_court_chemin(Date(2016,10,5),Heure(20,0,0),dep,arr);
 	for(auto it = ch.begin(); it != ch.end(); ++it){
@@ -306,7 +314,7 @@ int main() {
 			cout << (*it) << " - " << endl;
 		else
 			cout << (*it) << " - " << g.getStation((*it)).getDescription() << endl;
-	}*/
+	}
 
 	// Test option 4
 	/*	g.reseau_est_fortement_connexe(Date(2016,10,5),Heure(8,0,0),true);

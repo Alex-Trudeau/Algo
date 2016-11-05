@@ -97,7 +97,7 @@ std::vector<Heure> Gestionnaire::trouver_horaire(Date date, Heure heure,
 	std::unordered_map<std::string, Voyage*> voyDate = m_voyages_date[date];
 	for(auto it = vDeLigStat.begin(); it != vDeLigStat.end(); ++it){
 		string idVoy = (*it)->getId();
-		if(voyDate.count(idVoy)){ 						// && (*it)->getDestination() == destination
+		if(voyDate.count(idVoy) && (*it)->getDestination() == destination){ 						// && (*it)->getDestination() == destination
 			vector<Arret> arrets = (*it)->getArrets();
 			for(auto a = arrets.begin(); a != arrets.end(); ++a){
 				if((*a).getHeureArrivee() > heure && (int)(*a).getStationId() == station_id){
@@ -137,7 +137,15 @@ bool Gestionnaire::reseau_est_fortement_connexe(Date date, Heure heure_debut,
 void Gestionnaire::composantes_fortement_connexes(Date date, Heure heure_debut,
 		std::vector<std::vector<unsigned int> >& composantes,
 		bool considerer_transfert) {
-
+	Heure heure_fin = heure_debut.add_secondes(interval_planification_en_secondes);
+	Coordonnees fake = Coordonnees(46,-71);
+	if(considerer_transfert){
+		initialiser_reseau(date,heure_debut,heure_fin,fake,fake,0.0,distance_max_transfert);
+	}
+	else{
+		initialiser_reseau(date,heure_debut,heure_fin,fake,fake,0.0,0.0);
+	}
+	m_reseau.getComposantesFortementConnexes(composantes);
 }
 
 std::vector<unsigned int> Gestionnaire::plus_court_chemin(Date date,
@@ -149,21 +157,6 @@ std::vector<unsigned int> Gestionnaire::plus_court_chemin(Date date,
 	vector<unsigned int> chemin;
 	//m_reseau.dijkstra(num_depart,num_dest,chemin);
 	m_reseau.bellmanFord(num_depart,num_dest,chemin);
-	/*for(int i = 0; i < chemin.size(); i++){
-		if(chemin[i] == 1)
-			cout << chemin[i] << " - " << endl;
-		else{
-			int u = chemin[i];
-			int v = chemin[i+1];
-			int t = m_reseau.getTypeArc(u,v);
-			string typ;
-			if(t==0)
-				typ = "BUS";
-			else
-				typ = "Pied";
-			cout << u << " - " << v << " (" << typ << ")" << endl;
-		}
-	}*/
 	return chemin;
 }
 
@@ -327,7 +320,7 @@ void Gestionnaire::importerDatesVoyages(){
 	string fichier = m_repertoireGTFS + "calendar_dates.txt";
 	vector<vector<string>> objs;
 	lireFichier(fichier, objs, ',', true);
-	unordered_map<string,vector<string>> vServiceId;
+	unordered_map<string,vector<string>> vServiceId;		// <idService, vector<idVoyage>>
 	for(auto it = m_voyages.begin(); it != m_voyages.end(); ++it){
 		Voyage v = (*it).second;
 		vServiceId[v.getServiceId()].push_back(v.getId());
@@ -337,8 +330,9 @@ void Gestionnaire::importerDatesVoyages(){
 		unsigned int m = stoi(objs[i][1].substr(4,2));
 		unsigned int d = stoi(objs[i][1].substr(6,2));
 		string id = objs[i][0];
+		// Pour tous les idVoyage du serviceId
 		for(auto v = vServiceId[id].begin();v != vServiceId[id].end();++v){
-			m_voyages_date[Date(y,m,d)].insert({(*v),&m_voyages.at(*v)});
+			m_voyages_date[Date(y,m,d)].insert({(*v),&m_voyages.at(*v)});	// Ajouter {idVoyage,Voyage*}
 		}
 	}
 }
