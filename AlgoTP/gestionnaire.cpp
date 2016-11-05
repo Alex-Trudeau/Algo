@@ -155,8 +155,8 @@ std::vector<unsigned int> Gestionnaire::plus_court_chemin(Date date,
 	initialiser_reseau(date,heure_depart,heure_fin,depart,destination,distance_max_initiale,distance_max_transfert);
 	cout << "Recherche du plus court chemin" << endl;
 	vector<unsigned int> chemin;
-	//m_reseau.dijkstra(num_depart,num_dest,chemin);
-	m_reseau.bellmanFord(num_depart,num_dest,chemin);
+	m_reseau.dijkstra(num_depart,num_dest,chemin);
+	//m_reseau.bellmanFord(num_depart,num_dest,chemin);
 	return chemin;
 }
 
@@ -224,8 +224,6 @@ void Gestionnaire::initialiser_reseau(Date date, Heure heure_depart,
 					c = 30;
 				else
 					c = va[a+1].getHeureDepart()-va[a].getHeureDepart();
-
-				//c = (m_stations.at(v).getCoords()-m_stations.at(u).getCoords())*1000;
 				if(m_reseau.arcExiste(u,v)){
 					if(m_reseau.getCoutArc(u,v) > (int)c)
 						m_reseau.majCoutArc(u,v,c);
@@ -249,7 +247,7 @@ void Gestionnaire::initialiser_reseau(Date date, Heure heure_depart,
 				if(!m_reseau.sommetExiste(v))
 					continue;
 				if(m_reseau.arcExiste(u,v)){
-					if(m_reseau.getCoutArc(u,v) > (int)c && m_reseau.getTypeArc(u,v) == 1)
+					if(m_reseau.getCoutArc(u,v) > (int)c ) //&& m_reseau.getTypeArc(u,v) == 1
 						m_reseau.majCoutArc(u,v,c);
 				}
 				else

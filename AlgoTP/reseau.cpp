@@ -146,7 +146,7 @@ int Reseau::dijkstra(unsigned int numOrig, unsigned int numDest, std::vector<uns
 			unsigned int v = (*it).first;
 			unsigned int w = (*it).second.first;
 			unsigned int temp = d[u] + w;
-			if(temp < d[v] && !vis[v]){
+			if(temp < d[v] ){ //&& !vis[v]
 				d[v] = temp;
 				p[v] = u;
 				q.push(pii(d[v],v));
