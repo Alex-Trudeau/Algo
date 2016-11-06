@@ -139,6 +139,7 @@ void printCarnetAdd(vector<addresse> carnet){
 	int compteur = 1;
 	for(auto it = carnet.begin(); it != carnet.end(); ++it){
 		cout << compteur << " - " << (*it).addresse << ": " << (*it).coord << endl;
+		compteur ++;
 	}
 	cout << "sélectionner une addresse en indiquant son numéro: ";
 }
@@ -155,13 +156,13 @@ void itineraire(Gestionnaire & g, vector<addresse> carnet){
 	while(!valide){
 		cout << "Choisir votre point de départ" << endl;
 		printCarnetAdd(carnet);
-
 		cin.ignore();
+		cin.clear();
 		getline(cin,cD);
 		if(!cD.empty()){
 			istringstream stream(cD);
 			stream >> d;
-			if( d < (int)carnet.size() && d > 0)
+			if( d <= (int)carnet.size() && d > 0)
 				valide = true;
 		}
 		if(!valide)
@@ -172,22 +173,21 @@ void itineraire(Gestionnaire & g, vector<addresse> carnet){
 		cout << "Choisir votre point d'arrivé" << endl;
 		printCarnetAdd(carnet);
 
-		cin.ignore();
+		cin.clear();
 		getline(cin,cA);
 		if(!cA.empty()){
 			istringstream stream(cA);
 			stream >> ar;
-			if( ar < (int)carnet.size() && ar > 0 && ar != d)
+			if( ar <= (int)carnet.size() && ar > 0 && ar != d)
 				valide = true;
 		}
 		if(!valide)
 			cout << "Choix invalide" << endl;
 	}
-	Coordonnees dep = carnet[d].coord;
-	Coordonnees arr = carnet[ar].coord;
+	Coordonnees dep = carnet[d-1].coord;
+	Coordonnees arr = carnet[ar-1].coord;
 
 	cout << "Entrez la date désirée" << endl;
-	cin.ignore();
 	a = entreeDonneeDefaut(dDef.getAn(),"annee");
 	m = entreeDonneeDefaut(dDef.getMois(),"mois");
 	j = entreeDonneeDefaut(dDef.getJour(),"jour");
@@ -197,7 +197,13 @@ void itineraire(Gestionnaire & g, vector<addresse> carnet){
 	sec = entreeDonneeDefaut(hDef.getSec(),"secondes");
 	if(!g.date_est_prise_en_charge(Date(a,m,j)))
 		throw logic_error("Date non prise en charge par le reseau");
-	vector<unsigned int> chemin = g.plus_court_chemin(Date(a,m,j),Heure(hr,min,sec),dep,arr);
+	vector<unsigned int> ch = g.plus_court_chemin(Date(a,m,j),Heure(hr,min,sec),dep,arr);
+	for(auto it = ch.begin(); it != ch.end(); ++it){
+		if((*it) == 0 || (*it) == 1)
+			cout << (*it) << " - " << endl;
+		else
+			cout << (*it) << " - " << g.getStation((*it)).getDescription() << endl;
+	}
 }
 
 void reseauFortementConnexe(Gestionnaire & g){
@@ -236,7 +242,6 @@ int main() {
 
 	Gestionnaire g = Gestionnaire(chemin);
 	cout << tempsTraitement(start) << endl;
-
 
 	// Boucle sur le menu tant que le choix est entre 1,2,3 ou 4
 	bool fin = false;
