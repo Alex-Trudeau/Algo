@@ -163,33 +163,33 @@ int Reseau::dijkstra(unsigned int numOrig, unsigned int numDest, std::vector<uns
 	chemin.push_back(numOrig);
 	std::reverse(chemin.begin(),chemin.end());
 
-	return p[numDest];
+	return d[numDest];
 }
 
 int Reseau::bellmanFord(unsigned int numOrig, unsigned int numDest, std::vector<unsigned int> & chemin)
 			throw (std::logic_error){
 	if(!chemin.empty())
 			throw logic_error("Le chemin fourni n'est pas vide");
-	typedef pair<unsigned int, unsigned int> poidsPred;
-
-	unordered_map<unsigned int, poidsPred> dp;
+	unordered_map<unsigned int, unsigned int> d;	// Map des couts
+	unordered_map<unsigned int, unsigned int> p;	// Map des predecesseurs
 
 	for(it_sommet it = adj.begin(); it != adj.end(); ++it){
-		dp[(*it).first] = {INFINI,NULL};
+		d[(*it).first] = INFINI;
+		p[(*it).first] = NULL;
 	}
 
-	dp[numOrig].first = 0;
+	d[numOrig] = 0;
 
-	for(int i = 0 ; i < nombreSommets(); i++){
+	for(int i = 0 ; i < nombreSommets()-1; i++){
 		int nbRelache = 0;
 		for(it_sommet it = adj.begin(); it != adj.end(); ++it){
 			unsigned int u = (*it).first;
 			for(it_arc it2 = adj[u].begin(); it2 != adj[u].end(); ++it2){
 				unsigned int v = (*it2).first;
-				unsigned int temp = dp[u].first + adj[u][v].first;
-				if(temp < dp[v].first){
-					dp[v].first = temp;
-					dp[v].second = u;
+				unsigned int temp = d[u] + adj[u][v].first;
+				if(temp < d[v]){
+					d[v] = temp;
+					p[v] = u;
 					nbRelache++;
 				}
 			}
@@ -202,23 +202,23 @@ int Reseau::bellmanFord(unsigned int numOrig, unsigned int numDest, std::vector<
 		unsigned int u = (*it).first;
 		for(it_arc it2 = adj[u].begin(); it2 != adj[u].end(); ++it2){
 			unsigned int v = (*it2).first;
-			unsigned int temp = dp[u].first + adj[u][v].first;
-			if(temp < dp[v].first)
+			unsigned int temp = d[u] + adj[u][v].first;
+			if(temp < d[v])
 				return NULL;
 		}
 	}
 
-	if(dp[numDest].first != INFINI){
-		int p = numDest;
-		while(p != numOrig){
-			chemin.push_back(p);
-			p = dp[p].second;
+	if(p[numDest] != NULL){
+		unsigned int cour = numDest;
+		while(cour != numOrig){
+			unsigned int pred = p[cour];
+			chemin.push_back(cour);
+			cour = pred;
 		}
 		chemin.push_back(numOrig);
 		std::reverse(chemin.begin(),chemin.end());
-		return dp[numDest].first;
 	}
-	return NULL;
+	return d[numDest];
 }
 
 bool Reseau::estFortementConnexe() const{

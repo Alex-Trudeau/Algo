@@ -155,8 +155,10 @@ std::vector<unsigned int> Gestionnaire::plus_court_chemin(Date date,
 	initialiser_reseau(date,heure_depart,heure_fin,depart,destination,distance_max_initiale,distance_max_transfert);
 	cout << "Recherche du plus court chemin" << endl;
 	vector<unsigned int> chemin;
-	m_reseau.dijkstra(num_depart,num_dest,chemin);
-	//m_reseau.bellmanFord(num_depart,num_dest,chemin);
+	//int start = clock();
+	//m_reseau.dijkstra(num_depart,num_dest,chemin); // Temps de 0.008477 secondes
+	m_reseau.bellmanFord(num_depart,num_dest,chemin);	// Temps de 0.573507 secondes
+	//cout << (clock()-start)/double(CLOCKS_PER_SEC) << " secondes" << endl;
 	return chemin;
 }
 
@@ -220,10 +222,10 @@ void Gestionnaire::initialiser_reseau(Date date, Heure heure_depart,
 					m_reseau.ajouterSommet(v);
 					stations.push_back(v);
 				}
-				if(va[a+1].getHeureDepart()-va[a].getHeureDepart() <= 0)
+				if(va[a+1].getHeureArrivee()-va[a].getHeureDepart() <= 0)
 					c = 30;
 				else
-					c = va[a+1].getHeureDepart()-va[a].getHeureDepart();
+					c = va[a+1].getHeureArrivee()-va[a].getHeureDepart();
 				if(m_reseau.arcExiste(u,v)){
 					if(m_reseau.getCoutArc(u,v) > (int)c)
 						m_reseau.majCoutArc(u,v,c);
