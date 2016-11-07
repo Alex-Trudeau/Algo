@@ -126,7 +126,6 @@ void horaireBus(Gestionnaire & g){
 		else
 			hrs = g.trouver_horaire(Date(a,m,j),Heure(hr,min,sec),noBus,noStation,dests.second);
 	}
-	cout << Date(a,m,j) << Heure(hr,min,sec) << noBus << noStation << endl;
 	cout << l;
 	cout << s.getId() << " - " << s.getDescription() << "\n" <<  endl;
 	for(auto it = hrs.begin(); it != hrs.end(); ++it){
